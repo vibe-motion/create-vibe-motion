@@ -9,11 +9,12 @@ const PACKAGE_ROOT = resolve(SCRIPT_DIR, "..");
 const MANIFEST_PATH = resolve(PACKAGE_ROOT, "scaffold-manifest.json");
 const TEMPLATE_PACKAGE_PATH = resolve(PACKAGE_ROOT, "scaffold-template-package.json");
 const TEMPLATE_GITIGNORE_PATH = resolve(PACKAGE_ROOT, "scaffold-template-gitignore");
+const DEFAULT_TARGET_DIRNAME = "vibe-motion-app";
 
 const args = process.argv.slice(2);
 const force = args.includes("--force") || args.includes("-f");
 const positional = args.filter((arg) => !arg.startsWith("-"));
-const targetArg = positional[0] ?? ".";
+const targetArg = positional[0] ?? DEFAULT_TARGET_DIRNAME;
 const targetDir = resolve(process.cwd(), targetArg);
 
 const ensureTargetDir = () => {

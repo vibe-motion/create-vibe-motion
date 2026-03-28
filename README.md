@@ -8,6 +8,8 @@ Initialize a Vibe Motion Remotion scaffold project.
 npm create vibe-motion@latest my-app
 ```
 
+If no directory is provided, it creates `./vibe-motion-app` by default.
+
 Then:
 
 ```bash
@@ -26,19 +28,13 @@ This repository includes a publish workflow at `.github/workflows/publish.yml`.
 
 It publishes to npm when you push a tag that starts with `v` (for example `v0.1.1`).
 
-### Configure npm Trusted Publisher
-
-On npm package settings (`create-vibe-motion`) -> `Trusted publishing`:
-
-- Provider: `GitHub Actions`
-- Organization or user: `vibe-motion`
-- Repository: `create-vibe-motion`
-- Workflow filename: `publish.yml`
-- Environment name: leave empty unless you use GitHub Environments
-
 ### Release
 
 ```bash
 npm version patch
 git push origin main --follow-tags
 ```
+
+## Handover
+
+See [HANDOVER.md](./HANDOVER.md) for ongoing development and maintenance notes.

@@ -23,7 +23,7 @@ const toText = (value, fallback) => {
 export const DEFAULT_DEMO_MOTION_PROPS = Object.freeze({
   title: "Scaffold Demo",
   subtitle: "Replace this scene with any React component animation.",
-  badgeText: "Reusable Plugin",
+  badgeText: "Vibe Motion",
   videoWidth: 1080,
   videoHeight: 1080,
   durationSeconds: 6,

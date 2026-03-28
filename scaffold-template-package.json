@@ -1,29 +1,9 @@
 {
-  "name": "create-vibe-motion",
+  "name": "vibe-motion-app",
+  "private": true,
   "version": "0.1.0",
-  "description": "Create a new Vibe Motion Remotion scaffold project",
   "type": "module",
-  "bin": {
-    "create-vibe-motion": "bin/create-vibe-motion.mjs"
-  },
-  "files": [
-    "bin",
-    "scaffold-manifest.json",
-    "scaffold-template-package.json",
-    "scaffold-template-gitignore",
-    ".env.example",
-    "eslint.config.js",
-    "remotion.config.js",
-    "vite.config.js",
-    "preview",
-    "remotion",
-    "scripts/dev-workbench.mjs",
-    "scripts/remotion-render.mjs",
-    "scripts/open-edgeone-pages.mjs",
-    "shared"
-  ],
   "scripts": {
-    "create:local": "node bin/create-vibe-motion.mjs",
     "preview:dev": "vite",
     "remotion:studio": "bunx remotion studio",
     "remotion:bundle": "bunx remotion bundle",
@@ -38,28 +18,7 @@
     "lint": "eslint .",
     "verify": "npm run lint && npm run remotion:compositions"
   },
-  "keywords": [
-    "create",
-    "scaffold",
-    "remotion",
-    "vibe-motion"
-  ],
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/vibe-motion/create-vibe-motion.git"
-  },
-  "homepage": "https://github.com/vibe-motion/create-vibe-motion#readme",
-  "bugs": {
-    "url": "https://github.com/vibe-motion/create-vibe-motion/issues"
-  },
-  "engines": {
-    "node": ">=18.18.0"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "devDependencies": {
+  "dependencies": {
     "@fontsource-variable/jetbrains-mono": "^5.2.8",
     "@remotion/cli": "4.0.440",
     "@remotion/tailwind-v4": "4.0.440",
@@ -67,7 +26,9 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "remotion": "4.0.440",
-    "tailwindcss": "^4.1.4",
+    "tailwindcss": "^4.1.4"
+  },
+  "devDependencies": {
     "@eslint/js": "^9.22.0",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",

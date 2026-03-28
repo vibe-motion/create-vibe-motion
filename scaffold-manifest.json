@@ -1,0 +1,12 @@
+[
+  ".env.example",
+  "eslint.config.js",
+  "remotion.config.js",
+  "vite.config.js",
+  "preview",
+  "remotion",
+  "scripts/dev-workbench.mjs",
+  "scripts/remotion-render.mjs",
+  "scripts/open-edgeone-pages.mjs",
+  "shared"
+]

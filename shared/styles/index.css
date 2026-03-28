@@ -1,0 +1,51 @@
+@import "@fontsource-variable/jetbrains-mono";
+@import "tailwindcss";
+@source "../features/**/*.{js,jsx,ts,tsx}";
+@source "../../preview/**/*.{js,jsx,ts,tsx}";
+@source "../../remotion/**/*.{js,jsx,ts,tsx}";
+
+:root {
+  font-family: "JetBrains Mono Variable", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  background: #eef2f6;
+  color: #0f172a;
+}
+
+.scaffold-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(15, 23, 42, 0.24) transparent;
+}
+
+.scaffold-scrollbar::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.scaffold-scrollbar::-webkit-scrollbar-track,
+.scaffold-scrollbar::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+.scaffold-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(15, 23, 42, 0.24);
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background-clip: padding-box;
+}
+
+.scaffold-scrollbar:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(15, 23, 42, 0.35);
+}

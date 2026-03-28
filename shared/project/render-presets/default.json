@@ -1,0 +1,13 @@
+{
+  "title": "Scaffold Demo",
+  "subtitle": "Replace this scene with your own component and animation timeline.",
+  "badgeText": "Reusable Plugin",
+  "videoWidth": 1080,
+  "videoHeight": 1080,
+  "durationSeconds": 6,
+  "speed": 1,
+  "orbitRadius": 180,
+  "accentHue": 210,
+  "backgroundHue": 195,
+  "cardTiltMax": 12
+}

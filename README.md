@@ -18,6 +18,10 @@ npm install
 npm run dev
 ```
 
+On macOS, `npm install` triggers a shared Chrome Headless Shell check/install for Remotion and stores it under:
+
+`~/Library/Caches/com.zjucat.create-vive-motion/remotion`
+
 ## Options
 
 - `--force`: overwrite files when the target directory is not empty.

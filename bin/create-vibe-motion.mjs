@@ -95,7 +95,9 @@ const run = () => {
   if (targetArg !== ".") {
     console.log(`  cd ${displayPath}`);
   }
-  console.log("  npm install");
+  console.log(
+    "  npm install   # includes Chrome Headless Shell check/install (macOS cache: ~/Library/Caches/com.zjucat.create-vive-motion/remotion)"
+  );
   console.log("  npm run dev");
 };
 

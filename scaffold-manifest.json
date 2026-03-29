@@ -5,7 +5,10 @@
   "vite.config.js",
   "preview",
   "remotion",
+  "scripts/remotion-browser-executable.mjs",
+  "scripts/remotion-cli.mjs",
   "scripts/dev-workbench.mjs",
+  "scripts/remotion-ensure-browser.mjs",
   "scripts/remotion-render.mjs",
   "scripts/open-edgeone-pages.mjs",
   "shared"

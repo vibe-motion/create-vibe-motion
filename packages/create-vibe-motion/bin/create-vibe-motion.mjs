@@ -5,7 +5,7 @@ import { basename, dirname, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
-const PACKAGE_ROOT = resolve(SCRIPT_DIR, "..");
+const PACKAGE_ROOT = resolve(SCRIPT_DIR, "..", "template");
 const MANIFEST_PATH = resolve(PACKAGE_ROOT, "scaffold-manifest.json");
 const TEMPLATE_PACKAGE_PATH = resolve(PACKAGE_ROOT, "scaffold-template-package.json");
 const TEMPLATE_GITIGNORE_PATH = resolve(PACKAGE_ROOT, "scaffold-template-gitignore");
@@ -96,9 +96,9 @@ const run = () => {
     console.log(`  cd ${displayPath}`);
   }
   console.log(
-    "  npm install   # includes Chrome Headless Shell check/install (macOS cache: ~/Library/Caches/com.zjucat.create-vive-motion/remotion)"
+    "  pnpm install  # recommended (shared store saves disk space)"
   );
-  console.log("  npm run dev");
+  console.log("  pnpm dev");
 };
 
 try {

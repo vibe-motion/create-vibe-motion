@@ -1,85 +1,17 @@
 {
-  "name": "create-vibe-motion",
-  "version": "0.2.0",
-  "description": "Create a new Vibe Motion Remotion scaffold project",
+  "private": true,
+  "name": "vibe-motion-monorepo",
   "type": "module",
-  "bin": {
-    "create-vibe-motion": "bin/create-vibe-motion.mjs"
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   },
-  "files": [
-    "bin",
-    "scaffold-manifest.json",
-    "scaffold-template-package.json",
-    "scaffold-template-gitignore",
-    ".env.example",
-    "eslint.config.js",
-    "remotion.config.js",
-    "vite.config.js",
-    "preview",
-    "remotion",
-    "scripts/remotion-browser-executable.mjs",
-    "scripts/remotion-cli.mjs",
-    "scripts/dev-workbench.mjs",
-    "scripts/remotion-ensure-browser.mjs",
-    "scripts/remotion-render.mjs",
-    "scripts/open-edgeone-pages.mjs",
-    "shared"
-  ],
   "scripts": {
-    "create:local": "node bin/create-vibe-motion.mjs",
-    "preview:dev": "vite",
-    "remotion:ensure-browser": "node scripts/remotion-ensure-browser.mjs",
-    "remotion:studio": "node scripts/remotion-cli.mjs studio",
-    "remotion:bundle": "node scripts/remotion-cli.mjs bundle",
-    "remotion:compositions": "node scripts/remotion-cli.mjs compositions",
-    "remotion:render": "node scripts/remotion-render.mjs",
-    "remotion:render:demo": "REMOTION_OUTPUT=out/scaffold-demo-defaults-transparent.mov REMOTION_PROPS_FILE=shared/project/render-presets/default.json npm run remotion:render",
-    "deploy:edgeone:url": "EDGEONE_OPEN=0 node scripts/open-edgeone-pages.mjs",
-    "deploy:edgeone:open": "node scripts/open-edgeone-pages.mjs",
-    "deploy:edgeone": "npm run remotion:bundle && npm run deploy:edgeone:open",
-    "dev": "node scripts/dev-workbench.mjs",
-    "build": "npm run deploy:edgeone",
-    "lint": "eslint .",
-    "verify": "npm run lint && npm run remotion:compositions"
-  },
-  "keywords": [
-    "create",
-    "scaffold",
-    "remotion",
-    "vibe-motion"
-  ],
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/vibe-motion/create-vibe-motion.git"
-  },
-  "homepage": "https://github.com/vibe-motion/create-vibe-motion#readme",
-  "bugs": {
-    "url": "https://github.com/vibe-motion/create-vibe-motion/issues"
-  },
-  "engines": {
-    "node": ">=18.18.0"
-  },
-  "publishConfig": {
-    "access": "public"
-  },
-  "devDependencies": {
-    "@fontsource-variable/jetbrains-mono": "^5.2.8",
-    "@remotion/cli": "4.0.438",
-    "@remotion/tailwind-v4": "4.0.438",
-    "@tailwindcss/vite": "^4.1.4",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "remotion": "4.0.438",
-    "tailwindcss": "^4.1.4",
-    "@eslint/js": "^9.22.0",
-    "@types/react": "^19.0.10",
-    "@types/react-dom": "^19.0.4",
-    "@vitejs/plugin-react": "^4.3.4",
-    "eslint": "^9.22.0",
-    "eslint-plugin-react-hooks": "^5.2.0",
-    "eslint-plugin-react-refresh": "^0.4.19",
-    "globals": "^16.0.0",
-    "vite": "^6.3.1"
+    "dev": "pnpm --filter @vibe-motion/template dev",
+    "lint": "pnpm --filter @vibe-motion/template lint",
+    "verify": "pnpm --filter @vibe-motion/template verify",
+    "create:local": "node packages/create-vibe-motion/bin/create-vibe-motion.mjs",
+    "sync-template": "node scripts/sync-template-to-cli.mjs"
   }
 }

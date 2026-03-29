@@ -1,6 +1,14 @@
 import { spawn } from "node:child_process";
 
-const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
+const detectPackageManager = () => {
+  const ua = process.env.npm_config_user_agent || "";
+  if (ua.startsWith("pnpm")) return "pnpm";
+  if (ua.startsWith("yarn")) return "yarn";
+  return "npm";
+};
+
+const pm = detectPackageManager();
+const pmCommand = process.platform === "win32" && pm === "npm" ? "npm.cmd" : pm;
 
 const tasks = [
   { name: "preview", args: ["run", "preview:dev"] },
@@ -29,7 +37,7 @@ const maybeExitProcess = () => {
 };
 
 for (const task of tasks) {
-  const child = spawn(npmCommand, task.args, {
+  const child = spawn(pmCommand, task.args, {
     stdio: "inherit",
     env: process.env,
   });

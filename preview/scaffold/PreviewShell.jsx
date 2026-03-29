@@ -21,7 +21,7 @@ export const PreviewShell = ({
       <div className="min-h-0 flex-1">
         <div
           ref={previewViewportRef}
-          className="flex h-full w-full items-center justify-center overflow-hidden rounded-2xl border border-slate-300 bg-[linear-gradient(135deg,#f7fafc_0%,#edf2f7_100%)]"
+          className="flex h-full w-full items-center justify-center overflow-hidden rounded-2xl border border-slate-300 bg-[linear-gradient(135deg,#fcfcfc_0%,#f0f0f0_100%)]"
         >
           <div className="relative" style={{ width: stageDisplayWidth, height: stageDisplayHeight }}>
             <div
@@ -29,11 +29,11 @@ export const PreviewShell = ({
               style={{
                 width: videoWidth,
                 height: videoHeight,
-                backgroundColor: "#f8fafc",
+                backgroundColor: "#ffffff",
                 backgroundImage:
-                  "linear-gradient(45deg, #e2e8f0 25%, transparent 25%), linear-gradient(-45deg, #e2e8f0 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #e2e8f0 75%), linear-gradient(-45deg, transparent 75%, #e2e8f0 75%)",
-                backgroundSize: "36px 36px",
-                backgroundPosition: "0 0, 0 18px, 18px -18px, -18px 0px",
+                  "linear-gradient(45deg, #e9e9e9 25%, transparent 25%), linear-gradient(-45deg, #e9e9e9 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #e9e9e9 75%), linear-gradient(-45deg, transparent 75%, #e9e9e9 75%)",
+                backgroundSize: "28px 28px",
+                backgroundPosition: "0 0, 0 14px, 14px -14px, -14px 0px",
                 transform: `scale(${stageScale})`,
                 transformOrigin: "top left",
               }}

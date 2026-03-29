@@ -1,22 +1,21 @@
 import { spawnSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { ACTIVE_COMPOSITION } from "../shared/project/activeProject.js";
+import { ACTIVE_COMPOSITION_ID } from "../shared/project/projectConfig.js";
 
 const DEFAULT_CODEC = "prores";
 const DEFAULT_PRORES_PROFILE = "4444";
 const DEFAULT_PIXEL_FORMAT = "yuva444p10le";
 const DEFAULT_IMAGE_FORMAT = "png";
 const DEFAULT_SCALE = "2";
-const DEFAULT_COMPOSITION_ID = ACTIVE_COMPOSITION.id;
-const DEFAULT_FPS = String(ACTIVE_COMPOSITION.fps);
+const DEFAULT_COMPOSITION_ID = ACTIVE_COMPOSITION_ID;
 
 const compositionId = (
   process.env.REMOTION_COMPOSITION_ID || DEFAULT_COMPOSITION_ID
 ).trim();
-const fps = (process.env.REMOTION_FPS || DEFAULT_FPS).trim();
+const fps = (process.env.REMOTION_FPS || "").trim();
 const outputPath = (
-  process.env.REMOTION_OUTPUT || `out/${compositionId}-alpha.mov`
+  process.env.REMOTION_OUTPUT || `out/${compositionId}-transparent.mov`
 ).trim();
 const codec = (process.env.REMOTION_CODEC || DEFAULT_CODEC).trim();
 const proresProfile = (
@@ -48,14 +47,13 @@ const resolvePropsJson = () => {
 };
 
 const resolvedPropsJson = resolvePropsJson();
+const fpsForLog = fps.length > 0 ? fps : "composition-default";
 
 const args = [
   "remotion",
   "render",
   compositionId,
   outputPath,
-  "--fps",
-  fps,
   "--codec",
   codec,
   "--prores-profile",
@@ -68,12 +66,16 @@ const args = [
   scale,
 ];
 
+if (fps.length > 0) {
+  args.push("--fps", fps);
+}
+
 if (resolvedPropsJson.length > 0) {
   args.push("--props", resolvedPropsJson);
 }
 
 console.log(
-  `[Remotion] render ${compositionId} -> ${outputPath} (fps=${fps}, codec=${codec})`
+  `[Remotion] render ${compositionId} -> ${outputPath} (fps=${fpsForLog}, codec=${codec})`
 );
 const result = spawnSync("bunx", args, { stdio: "inherit" });
 

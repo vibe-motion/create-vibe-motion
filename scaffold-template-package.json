@@ -9,7 +9,7 @@
     "remotion:bundle": "bunx remotion bundle",
     "remotion:compositions": "bunx remotion compositions",
     "remotion:render": "node scripts/remotion-render.mjs",
-    "remotion:render:demo": "REMOTION_OUTPUT=out/scaffold-demo-defaults.mov REMOTION_PROPS_FILE=shared/project/render-presets/default.json npm run remotion:render",
+    "remotion:render:demo": "REMOTION_OUTPUT=out/scaffold-demo-defaults-transparent.mov REMOTION_PROPS_FILE=shared/project/render-presets/default.json npm run remotion:render",
     "deploy:edgeone:url": "EDGEONE_OPEN=0 node scripts/open-edgeone-pages.mjs",
     "deploy:edgeone:open": "node scripts/open-edgeone-pages.mjs",
     "deploy:edgeone": "npm run remotion:bundle && npm run deploy:edgeone:open",

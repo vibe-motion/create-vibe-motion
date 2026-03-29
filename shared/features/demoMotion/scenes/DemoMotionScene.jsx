@@ -24,12 +24,24 @@ export const DemoMotionScene = ({
     <div
       className="relative h-full w-full overflow-hidden"
       style={{
-        background: `radial-gradient(circle at 24% 18%, hsl(${hue(backgroundHue, -18)} 68% 95%) 0%, hsl(${hue(
-          backgroundHue,
-          6
-        )} 52% 88%) 42%, hsl(${hue(backgroundHue, 22)} 36% 78%) 100%)`,
+        backgroundColor: "transparent",
       }}
     >
+      <div
+        className="absolute rounded-full blur-[110px]"
+        style={{
+          width: "68%",
+          aspectRatio: "1 / 1",
+          left: `calc(50% - ${orbitX * 0.25}px)`,
+          top: `calc(50% - ${orbitY * 0.2}px)`,
+          transform: "translate(-50%, -50%)",
+          background: `radial-gradient(circle, hsl(${hue(backgroundHue, -6)} 64% 72% / 0.34) 0%, hsl(${hue(
+            backgroundHue,
+            18
+          )} 58% 68% / 0.16) 48%, transparent 76%)`,
+        }}
+      />
+
       <div
         className="absolute rounded-full blur-3xl"
         style={{

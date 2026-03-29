@@ -22,7 +22,7 @@ On macOS, `pnpm install` triggers a shared Chrome Headless Shell check/install f
 
 `~/Library/Caches/com.zjucat.create-vive-motion/remotion`
 
-## Options
+### Options
 
 - `--force`: overwrite files when the target directory is not empty.
 
@@ -34,9 +34,19 @@ This is a pnpm monorepo with two packages:
 packages/
   create-vibe-motion/   # CLI package (published to npm, zero dependencies)
   template/             # Template files + dev environment (private, not published)
+scripts/
+  sync-template-to-cli.mjs   # copies template into CLI package before publish
 ```
 
-### Development
+### Where Template Content Comes From
+
+- Files copied by the CLI are controlled by `packages/template/scaffold-manifest.json`.
+- Generated `package.json`: `packages/template/scaffold-template-package.json`.
+- Generated `.gitignore`: `packages/template/scaffold-template-gitignore`.
+
+When adding or removing scaffold files, update `scaffold-manifest.json` first.
+
+## Development
 
 ```bash
 pnpm install              # install all dependencies
@@ -46,20 +56,51 @@ pnpm run sync-template    # sync template files into CLI package
 pnpm run create:local     # test scaffold generation locally
 ```
 
-## Automated Publishing (GitHub Actions)
-
-The publish workflow at `.github/workflows/publish.yml` is triggered by pushing a `v*` tag or via manual dispatch.
-
-It runs: `pnpm install` -> `lint` -> `sync-template` -> `pnpm publish` (from `packages/create-vibe-motion/`).
-
-### Release
+### Validate a Generated App
 
 ```bash
-cd packages/create-vibe-motion
-pnpm version patch        # bumps version in packages/create-vibe-motion/package.json
-cd ../..
-git add .
-git commit -m "vX.Y.Z"
-git tag vX.Y.Z
-git push origin main --follow-tags
+pnpm run create:local -- /tmp/vibe-motion-test-app
+cd /tmp/vibe-motion-test-app
+pnpm install
+pnpm dev
 ```
+
+### Common Commands
+
+```bash
+# package dry-run (from CLI package)
+cd packages/create-vibe-motion && pnpm pack --dry-run
+
+# check published version
+npm view create-vibe-motion version
+
+# run scaffold CLI directly
+node packages/create-vibe-motion/bin/create-vibe-motion.mjs my-app
+```
+
+## Release
+
+1. Bump version:
+   ```bash
+   cd packages/create-vibe-motion
+   pnpm version patch   # or minor / major
+   ```
+2. Commit and tag:
+   ```bash
+   cd ../..
+   git add .
+   git commit -m "vX.Y.Z"
+   git tag vX.Y.Z
+   git push origin main --follow-tags
+   ```
+3. GitHub Actions publishes automatically to npm (Trusted Publishing via `.github/workflows/publish.yml`).
+
+## Security / Dependency Policy
+
+- Avoid `pnpm audit fix` in template without manual verification.
+- Prefer pinning known-good versions when upstream has temporary advisories.
+- After dependency updates, always validate by generating a fresh app and running `pnpm install && pnpm audit`.
+
+## Remotion Note
+
+Remotion may render frames out of order and in parallel. Scene animation logic should be frame-deterministic and independently computable per frame.

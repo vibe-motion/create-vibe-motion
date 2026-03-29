@@ -1,5 +1,5 @@
 import { spawnSync } from "node:child_process";
-import { ensureSharedBrowserExecutable } from "./remotion-browser-executable.mjs";
+import { ensureSharedBrowserExecutable, detectRunner } from "./remotion-browser-executable.mjs";
 
 const run = async () => {
   const cliArgs = process.argv.slice(2);
@@ -21,10 +21,11 @@ const run = async () => {
     ? { ...process.env, REMOTION_BROWSER_EXECUTABLE: browserExecutable }
     : process.env;
 
-  const commandForLog = ["bunx", ...remotionArgs].join(" ");
+  const runner = detectRunner();
+  const commandForLog = [runner, ...remotionArgs].join(" ");
   console.log(`[Remotion] running ${commandForLog}`);
 
-  const result = spawnSync("bunx", remotionArgs, {
+  const result = spawnSync(runner, remotionArgs, {
     stdio: "inherit",
     env,
   });

@@ -98,9 +98,18 @@ const resolveLocalDownloadedBrowserDirectory = (platformTag) =>
     `chrome-headless-shell-${platformTag}`
   );
 
+export const detectRunner = () => {
+  for (const cmd of ["bunx", "npx"]) {
+    const check = spawnSync(cmd, ["--version"], { stdio: "ignore" });
+    if (!check.error) return cmd;
+  }
+  return "npx";
+};
+
 const runRemotionBrowserEnsure = ({ log }) => {
-  log("Cache miss. Running `bunx remotion browser ensure` in project context.");
-  const result = spawnSync("bunx", ["remotion", "browser", "ensure"], {
+  const runner = detectRunner();
+  log(`Cache miss. Running \`${runner} remotion browser ensure\` in project context.`);
+  const result = spawnSync(runner, ["remotion", "browser", "ensure"], {
     stdio: "inherit",
     env: process.env,
   });

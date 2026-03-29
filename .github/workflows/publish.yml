@@ -43,7 +43,7 @@ jobs:
         run: node scripts/sync-template-to-cli.mjs
 
       - name: Pack dry-run
-        run: cd packages/create-vibe-motion && pnpm pack --dry-run
+        run: cd packages/create-vibe-motion && npm pack --dry-run
 
       - name: Publish to npm
         run: cd packages/create-vibe-motion && pnpm publish --access public --provenance --no-git-checks

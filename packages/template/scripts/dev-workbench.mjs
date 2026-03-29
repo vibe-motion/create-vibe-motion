@@ -8,7 +8,7 @@ const detectPackageManager = () => {
 };
 
 const pm = detectPackageManager();
-const pmCommand = process.platform === "win32" && pm === "npm" ? "npm.cmd" : pm;
+const pmCommand = process.platform === "win32" ? `${pm}.cmd` : pm;
 
 const tasks = [
   { name: "preview", args: ["run", "preview:dev"] },

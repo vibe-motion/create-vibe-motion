@@ -2,6 +2,7 @@
   "private": true,
   "name": "vibe-motion-monorepo",
   "type": "module",
+  "packageManager": "pnpm@10.33.0",
   "pnpm": {
     "onlyBuiltDependencies": [
       "esbuild"

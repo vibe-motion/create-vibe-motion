@@ -3,6 +3,7 @@
 import { cpSync, existsSync, lstatSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { basename, dirname, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { spawnSync } from "node:child_process";
 
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const PACKAGE_ROOT = resolve(SCRIPT_DIR, "..", "template");
@@ -13,6 +14,7 @@ const DEFAULT_TARGET_DIRNAME = "vibe-motion-app";
 
 const args = process.argv.slice(2);
 const force = args.includes("--force") || args.includes("-f");
+const skipInstall = args.includes("--skip-install");
 const positional = args.filter((arg) => !arg.startsWith("-"));
 const targetArg = positional[0] ?? DEFAULT_TARGET_DIRNAME;
 const targetDir = resolve(process.cwd(), targetArg);
@@ -78,6 +80,36 @@ const readManifest = () => {
   return parsed;
 };
 
+const detectInstaller = () => {
+  for (const cmd of ["pnpm", "npm"]) {
+    const check = spawnSync(cmd, ["--version"], { stdio: "ignore" });
+    if (!check.error) return cmd;
+  }
+  return null;
+};
+
+const runInstall = () => {
+  const pm = detectInstaller();
+  if (!pm) {
+    console.log("\nCould not find pnpm or npm. Please install dependencies manually.");
+    return false;
+  }
+
+  console.log(`\nInstalling dependencies with ${pm}...`);
+  const cmd = process.platform === "win32" ? `${pm}.cmd` : pm;
+  const result = spawnSync(cmd, ["install"], {
+    cwd: targetDir,
+    stdio: "inherit",
+  });
+
+  if (result.error || (typeof result.status === "number" && result.status !== 0)) {
+    console.error(`\nInstall failed. Run \`${pm} install\` manually in the project directory.`);
+    return false;
+  }
+
+  return true;
+};
+
 const run = () => {
   ensureTargetDir();
 
@@ -91,13 +123,18 @@ const run = () => {
 
   const displayPath = relative(process.cwd(), targetDir) || ".";
   console.log(`\nScaffold created at ${displayPath}`);
+
+  if (!skipInstall) {
+    runInstall();
+  }
+
   console.log("\nNext steps:");
   if (targetArg !== ".") {
     console.log(`  cd ${displayPath}`);
   }
-  console.log(
-    "  pnpm install  # recommended (shared store saves disk space)"
-  );
+  if (skipInstall) {
+    console.log("  pnpm install");
+  }
   console.log("  pnpm dev");
 };
 

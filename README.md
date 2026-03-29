@@ -6,25 +6,22 @@ Initialize a Vibe Motion Remotion scaffold project.
 
 ```bash
 npm create vibe-motion@latest my-app
-```
-
-If no directory is provided, it creates `./vibe-motion-app` by default.
-
-Then:
-
-```bash
 cd my-app
-pnpm install   # recommended (shared store saves disk space)
 pnpm dev
 ```
 
-On macOS, `pnpm install` triggers a shared Chrome Headless Shell check/install for Remotion and stores it under:
+Dependencies are installed automatically after scaffolding (pnpm preferred, falls back to npm).
+
+If no directory is provided, it creates `./vibe-motion-app` by default.
+
+On macOS, install triggers a shared Chrome Headless Shell check/install for Remotion and stores it under:
 
 `~/Library/Caches/com.zjucat.create-vive-motion/remotion`
 
 ### Options
 
 - `--force`: overwrite files when the target directory is not empty.
+- `--skip-install`: skip automatic dependency installation.
 
 ## Repository Structure
 
@@ -61,7 +58,6 @@ pnpm run create:local     # test scaffold generation locally
 ```bash
 pnpm run create:local -- /tmp/vibe-motion-test-app
 cd /tmp/vibe-motion-test-app
-pnpm install
 pnpm dev
 ```
 

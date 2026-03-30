@@ -81,11 +81,12 @@ node packages/create-vibe-motion/bin/create-vibe-motion.mjs my-app
    cd packages/create-vibe-motion
    pnpm version patch   # or minor / major
    ```
-2. Commit and push:
+2. Commit, tag, and push:
    ```bash
    cd ../..
    git add .
    git commit -m "X.Y.Z"
+   git tag vX.Y.Z
    git push origin main
    git push origin vX.Y.Z
    ```

@@ -76,20 +76,19 @@ node packages/create-vibe-motion/bin/create-vibe-motion.mjs my-app
 
 ## Release
 
-1. Bump version:
+1. Bump version in `packages/create-vibe-motion/package.json`.
+2. Commit and push:
    ```bash
-   cd packages/create-vibe-motion
-   pnpm version patch   # or minor / major
+   git add packages/create-vibe-motion/package.json
+   git commit -m "X.Y.Z"
+   git push origin main
    ```
-2. Commit and tag:
+3. Create and push tag:
    ```bash
-   cd ../..
-   git add .
-   git commit -m "vX.Y.Z"
    git tag vX.Y.Z
-   git push origin main --follow-tags
+   git push origin vX.Y.Z
    ```
-3. GitHub Actions publishes automatically to npm (Trusted Publishing via `.github/workflows/publish.yml`).
+4. GitHub Actions publishes automatically to npm (Trusted Publishing via `.github/workflows/publish.yml`).
 
 ## Security / Dependency Policy
 

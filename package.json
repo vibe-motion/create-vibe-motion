@@ -13,6 +13,7 @@
     "lint": "pnpm --filter @vibe-motion/template lint",
     "verify": "pnpm --filter @vibe-motion/template verify",
     "create:local": "node packages/create-vibe-motion/bin/create-vibe-motion.mjs",
-    "sync-template": "node scripts/sync-template-to-cli.mjs"
+    "sync-template": "node scripts/sync-template-to-cli.mjs",
+    "release": "node scripts/release.mjs"
   }
 }

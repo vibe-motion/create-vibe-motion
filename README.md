@@ -76,21 +76,11 @@ node packages/create-vibe-motion/bin/create-vibe-motion.mjs my-app
 
 ## Release
 
-1. Bump version:
-   ```bash
-   cd packages/create-vibe-motion
-   pnpm version patch   # or minor / major
-   ```
-2. Commit, tag, and push:
-   ```bash
-   cd ../..
-   git add .
-   git commit -m "X.Y.Z"
-   git tag vX.Y.Z
-   git push origin main
-   git push origin vX.Y.Z
-   ```
-3. GitHub Actions publishes automatically to npm (Trusted Publishing via `.github/workflows/publish.yml`).
+```bash
+pnpm release patch   # or minor / major
+```
+
+This script: bumps `packages/create-vibe-motion/package.json`, syncs the template, commits, tags, and pushes (`git push --follow-tags`). GitHub Actions then publishes to npm automatically.
 
 ## Security / Dependency Policy
 

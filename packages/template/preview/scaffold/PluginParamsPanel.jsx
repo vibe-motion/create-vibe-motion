@@ -26,11 +26,11 @@ const renderFieldControl = (field, value, onUpdateParam) => {
     return (
       <select
         className="w-full rounded border border-slate-300 bg-white px-2 py-1 font-mono text-xs text-slate-800"
-        value={value}
+        value={String(value)}
         onChange={(event) => onUpdateParam(field.key, event.target.value)}
       >
         {field.options.map((option) => (
-          <option key={option} value={option}>
+          <option key={option} value={String(option)}>
             {option}
           </option>
         ))}

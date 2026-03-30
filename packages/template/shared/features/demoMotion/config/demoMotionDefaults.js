@@ -24,9 +24,9 @@ export const DEFAULT_DEMO_MOTION_PROPS = Object.freeze({
   title: "Scaffold Demo",
   subtitle: "Replace this scene with any React component animation.",
   badgeText: "Vibe Motion",
-  videoWidth: 1080,
-  videoHeight: 1080,
-  durationSeconds: 6,
+  videoWidth: 480,
+  videoHeight: 480,
+  durationSeconds: 3,
   speed: 1,
   orbitRadius: 180,
   accentHue: 210,
@@ -56,18 +56,14 @@ export const DEMO_MOTION_PARAM_FIELDS = Object.freeze([
   {
     key: "videoWidth",
     label: "videoWidth",
-    control: "number",
-    min: 256,
-    max: 3840,
-    step: 1,
+    control: "select",
+    options: [480, 540, 720, 1080, 1280],
   },
   {
     key: "videoHeight",
     label: "videoHeight",
-    control: "number",
-    min: 256,
-    max: 3840,
-    step: 1,
+    control: "select",
+    options: [480, 540, 720, 1080, 1280],
   },
   {
     key: "durationSeconds",
@@ -128,9 +124,9 @@ export const normalizeDemoMotionParamValue = ({ key, rawValue, currentValue } = 
     case "badgeText":
       return toText(rawValue, DEFAULT_DEMO_MOTION_PROPS.badgeText);
     case "videoWidth":
-      return toInt(rawValue, DEFAULT_DEMO_MOTION_PROPS.videoWidth, 256, 3840);
+      return toInt(rawValue, DEFAULT_DEMO_MOTION_PROPS.videoWidth, 480, 1280);
     case "videoHeight":
-      return toInt(rawValue, DEFAULT_DEMO_MOTION_PROPS.videoHeight, 256, 3840);
+      return toInt(rawValue, DEFAULT_DEMO_MOTION_PROPS.videoHeight, 480, 1280);
     case "durationSeconds":
       return clamp(toNumber(rawValue, DEFAULT_DEMO_MOTION_PROPS.durationSeconds), 1, 30);
     case "speed":

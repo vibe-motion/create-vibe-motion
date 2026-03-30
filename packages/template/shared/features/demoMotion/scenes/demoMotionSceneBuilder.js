@@ -38,12 +38,12 @@ const toText = (value, fallback) => {
 };
 
 export const resolveDemoMotionSceneContext = (pluginParams = {}) => {
-  const videoWidth = toInt(pluginParams.videoWidth, DEFAULT_DEMO_MOTION_PROPS.videoWidth, 256, 3840);
+  const videoWidth = toInt(pluginParams.videoWidth, DEFAULT_DEMO_MOTION_PROPS.videoWidth, 480, 1280);
   const videoHeight = toInt(
     pluginParams.videoHeight,
     DEFAULT_DEMO_MOTION_PROPS.videoHeight,
-    256,
-    3840
+    480,
+    1280
   );
 
   return {

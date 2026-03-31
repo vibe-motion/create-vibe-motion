@@ -32,6 +32,10 @@ const maybeExitProcess = () => {
     return;
   }
 
+  if (shuttingDown) {
+    process.exit(0);
+  }
+
   const firstFailure = [...exitCodes.values()].find((code) => code !== 0);
   process.exit(typeof firstFailure === "number" ? firstFailure : 0);
 };

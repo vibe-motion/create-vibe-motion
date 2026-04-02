@@ -1,6 +1,12 @@
 # create-vibe-motion
 
-Initialize a Vibe Motion Remotion scaffold project.
+Scaffold a production-ready Remotion starter for procedural animation and programmatic video creation.
+
+`create-vibe-motion` helps you bootstrap a ready-to-run Remotion project in seconds, so you can focus on building scenes instead of wiring tooling.
+
+It is designed for creators and developers who want **procedural animation** workflows and want to **make video or motion graphics or animation programmatically**.
+
+Use it when you need a practical starter for code-driven video production, animation templates, and iterative content generation.
 
 ## Usage
 

@@ -1,4 +1,4 @@
-import { DEFAULT_DEMO_MOTION_PROPS } from "../config/demoMotionDefaults.js";
+import { DEFAULT_DEMO_MOTION_PLUGIN_PARAMS } from "../config/demoMotionDefaults.js";
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
@@ -60,43 +60,56 @@ const toBoolean = (value, fallback) => {
 };
 
 export const resolveDemoMotionSceneContext = (pluginParams = {}) => {
-  const videoWidth = toInt(pluginParams.videoWidth, DEFAULT_DEMO_MOTION_PROPS.videoWidth, 480, 1280);
+  const videoWidth = toInt(
+    pluginParams.videoWidth,
+    DEFAULT_DEMO_MOTION_PLUGIN_PARAMS.videoWidth,
+    480,
+    1280
+  );
   const videoHeight = toInt(
     pluginParams.videoHeight,
-    DEFAULT_DEMO_MOTION_PROPS.videoHeight,
+    DEFAULT_DEMO_MOTION_PLUGIN_PARAMS.videoHeight,
     480,
     1280
   );
 
   return {
-    title: toText(pluginParams.title, DEFAULT_DEMO_MOTION_PROPS.title),
-    subtitle: toText(pluginParams.subtitle, DEFAULT_DEMO_MOTION_PROPS.subtitle),
-    badgeText: toText(pluginParams.badgeText, DEFAULT_DEMO_MOTION_PROPS.badgeText),
+    title: toText(pluginParams.title, DEFAULT_DEMO_MOTION_PLUGIN_PARAMS.title),
+    subtitle: toText(pluginParams.subtitle, DEFAULT_DEMO_MOTION_PLUGIN_PARAMS.subtitle),
+    badgeText: toText(pluginParams.badgeText, DEFAULT_DEMO_MOTION_PLUGIN_PARAMS.badgeText),
     cardDarkMode: toBoolean(
       pluginParams.cardDarkMode,
-      DEFAULT_DEMO_MOTION_PROPS.cardDarkMode
+      DEFAULT_DEMO_MOTION_PLUGIN_PARAMS.cardDarkMode
     ),
-    speed: clamp(toNumber(pluginParams.speed, DEFAULT_DEMO_MOTION_PROPS.speed), 0, 1),
+    speed: clamp(toNumber(pluginParams.speed, DEFAULT_DEMO_MOTION_PLUGIN_PARAMS.speed), 0, 1),
     orbitRadius: toInt(
       pluginParams.orbitRadius,
-      DEFAULT_DEMO_MOTION_PROPS.orbitRadius,
+      DEFAULT_DEMO_MOTION_PLUGIN_PARAMS.orbitRadius,
       20,
       480
     ),
-    accentHue: toInt(pluginParams.accentHue, DEFAULT_DEMO_MOTION_PROPS.accentHue, 0, 360),
+    accentHue: toInt(
+      pluginParams.accentHue,
+      DEFAULT_DEMO_MOTION_PLUGIN_PARAMS.accentHue,
+      0,
+      360
+    ),
     backgroundHue: toInt(
       pluginParams.backgroundHue,
-      DEFAULT_DEMO_MOTION_PROPS.backgroundHue,
+      DEFAULT_DEMO_MOTION_PLUGIN_PARAMS.backgroundHue,
       0,
       360
     ),
     cardTiltMax: clamp(
-      toNumber(pluginParams.cardTiltMax, DEFAULT_DEMO_MOTION_PROPS.cardTiltMax),
+      toNumber(pluginParams.cardTiltMax, DEFAULT_DEMO_MOTION_PLUGIN_PARAMS.cardTiltMax),
       -30,
       30
     ),
     durationSeconds: clamp(
-      toNumber(pluginParams.durationSeconds, DEFAULT_DEMO_MOTION_PROPS.durationSeconds),
+      toNumber(
+        pluginParams.durationSeconds,
+        DEFAULT_DEMO_MOTION_PLUGIN_PARAMS.durationSeconds
+      ),
       1,
       30
     ),

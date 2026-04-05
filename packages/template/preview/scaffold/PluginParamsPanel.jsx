@@ -103,37 +103,97 @@ const renderFieldControl = (field, value, onUpdateParam) => {
 
 export const PluginParamsPanel = ({
   title = "Parameters",
+  description = "",
   fields,
   pluginParams,
   onUpdateParam,
 }) => {
   const safeFields = Array.isArray(fields) ? fields : [];
   const primaryFields = safeFields.filter((field) => field.section === "primary");
-  const gridFields = safeFields.filter((field) => field.section !== "primary");
+  const layoutFields = safeFields.filter((field) => field.section === "layout");
+  const animationFields = safeFields.filter((field) => field.section === "animation");
+  const extraFields = safeFields.filter(
+    (field) => !["primary", "layout", "animation"].includes(field.section)
+  );
+  const hasLayoutFields = layoutFields.length > 0;
+  const hasAnimationFields =
+    primaryFields.length > 0 || animationFields.length > 0 || extraFields.length > 0;
 
   return (
     <>
       <div className="mb-4 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500">
         {title}
       </div>
+      {description ? (
+        <div className="mb-4 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 font-mono text-[11px] leading-relaxed text-slate-600">
+          {description}
+        </div>
+      ) : null}
 
-      {primaryFields.map((field) => (
-        <label key={field.key} className="mb-4 block">
-          <div className="mb-1 text-xs text-slate-600">{field.label}</div>
-          {renderFieldControl(field, pluginParams[field.key], onUpdateParam)}
-        </label>
-      ))}
+      {hasLayoutFields ? (
+        <>
+          <div className="mb-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500">
+            Video Layout Params
+          </div>
+          <div className="mb-4 grid gap-3 sm:grid-cols-2">
+            {layoutFields.map((field) => (
+              <label key={field.key} className="block">
+                <div className="mb-1 break-words text-xs leading-snug text-slate-600">
+                  {field.label}
+                </div>
+                {renderFieldControl(field, pluginParams[field.key], onUpdateParam)}
+              </label>
+            ))}
+          </div>
+        </>
+      ) : null}
 
-      {gridFields.length > 0 ? <div className="mb-4 border-t border-slate-200" /> : null}
+      {hasLayoutFields && hasAnimationFields ? (
+        <div className="mb-4 border-t border-slate-200" />
+      ) : null}
 
-      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-        {gridFields.map((field) => (
-          <label key={field.key} className="block">
-            <div className="mb-1 text-xs text-slate-600">{field.label}</div>
-            {renderFieldControl(field, pluginParams[field.key], onUpdateParam)}
-          </label>
-        ))}
-      </div>
+      {hasAnimationFields ? (
+        <>
+          <div className="mb-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-slate-500">
+            Default Animation Params (demoMotion)
+          </div>
+
+          {primaryFields.map((field) => (
+            <label key={field.key} className="mb-4 block">
+              <div className="mb-1 break-words text-xs leading-snug text-slate-600">
+                {field.label}
+              </div>
+              {renderFieldControl(field, pluginParams[field.key], onUpdateParam)}
+            </label>
+          ))}
+
+          {animationFields.length > 0 ? (
+            <div className="mb-4 grid gap-3 sm:grid-cols-2">
+              {animationFields.map((field) => (
+                <label key={field.key} className="block">
+                  <div className="mb-1 break-words text-xs leading-snug text-slate-600">
+                    {field.label}
+                  </div>
+                  {renderFieldControl(field, pluginParams[field.key], onUpdateParam)}
+                </label>
+              ))}
+            </div>
+          ) : null}
+        </>
+      ) : null}
+
+      {extraFields.length > 0 ? (
+        <div className="grid gap-3 sm:grid-cols-2">
+          {extraFields.map((field) => (
+            <label key={field.key} className="block">
+              <div className="mb-1 break-words text-xs leading-snug text-slate-600">
+                {field.label}
+              </div>
+              {renderFieldControl(field, pluginParams[field.key], onUpdateParam)}
+            </label>
+          ))}
+        </div>
+      ) : null}
     </>
   );
 };

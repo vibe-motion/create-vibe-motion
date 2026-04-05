@@ -32,15 +32,15 @@ export const ScaffoldRoot = ({ compositionId, fps, plugin }) => {
   const resolvedCompositionId = normalizeCompositionId(compositionId);
   const resolvedFps = normalizePositiveInt(fps, 30);
   const VideoComponent = bindVideoComponent(plugin);
-  const defaultProps = resolvePluginParams(plugin);
+  const defaultPluginParams = resolvePluginParams(plugin);
   const defaultSceneContext = resolvePluginSceneContext({
     plugin,
-    pluginParams: defaultProps,
+    pluginParams: defaultPluginParams,
   });
   const defaultLayout = resolvePluginLayout({
     plugin,
     sceneContext: defaultSceneContext,
-    pluginParams: defaultProps,
+    pluginParams: defaultPluginParams,
   });
 
   return (
@@ -51,23 +51,23 @@ export const ScaffoldRoot = ({ compositionId, fps, plugin }) => {
         plugin,
         fps: resolvedFps,
         sceneContext: defaultSceneContext,
-        pluginParams: defaultProps,
+        pluginParams: defaultPluginParams,
       })}
       fps={resolvedFps}
       width={normalizePositiveInt(defaultLayout.videoWidth, 1)}
       height={normalizePositiveInt(defaultLayout.videoHeight, 1)}
-      defaultProps={defaultProps}
+      defaultProps={defaultPluginParams}
       calculateMetadata={({ props }) => {
         const resolvedProps = resolvePluginParams(plugin, props);
         const pluginParams = resolvePluginParams(plugin, {
           ...resolvedProps,
           videoWidth: normalizePositiveInt(
             props?.videoWidth,
-            defaultProps.videoWidth
+            defaultPluginParams.videoWidth
           ),
           videoHeight: normalizePositiveInt(
             props?.videoHeight,
-            defaultProps.videoHeight
+            defaultPluginParams.videoHeight
           ),
         });
         const sceneContext = resolvePluginSceneContext({

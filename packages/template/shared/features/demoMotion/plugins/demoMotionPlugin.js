@@ -1,5 +1,5 @@
 import {
-  DEFAULT_DEMO_MOTION_PROPS,
+  DEFAULT_DEMO_MOTION_PLUGIN_PARAMS,
   DEMO_MOTION_PARAM_FIELDS,
   normalizeDemoMotionParamValue,
 } from "../config/demoMotionDefaults.js";
@@ -12,22 +12,24 @@ import {
 
 export const demoMotionPlugin = Object.freeze({
   id: "demo-motion",
-  controlPanelTitle: "Scaffold Controls",
+  controlPanelTitle: "Template Parameters",
+  controlPanelDescription:
+    "videoWidth/videoHeight are video layout params. The rest belong to the default demoMotion scene and should be replaced when you swap to a new animation.",
   paramFields: DEMO_MOTION_PARAM_FIELDS,
-  defaultProps: DEFAULT_DEMO_MOTION_PROPS,
+  defaultProps: DEFAULT_DEMO_MOTION_PLUGIN_PARAMS,
   SceneComponent: DemoMotionScene,
   normalizeParamValue: ({ key, rawValue, currentValue }) =>
     normalizeDemoMotionParamValue({ key, rawValue, currentValue }),
   resolveSceneContext: (pluginParams) =>
     resolveDemoMotionSceneContext({
-      ...DEFAULT_DEMO_MOTION_PROPS,
+      ...DEFAULT_DEMO_MOTION_PLUGIN_PARAMS,
       ...(pluginParams ?? {}),
     }),
   getDurationInFrames: ({ fps, sceneContext, pluginParams } = {}) => {
     const resolvedContext =
       sceneContext ??
       resolveDemoMotionSceneContext({
-        ...DEFAULT_DEMO_MOTION_PROPS,
+        ...DEFAULT_DEMO_MOTION_PLUGIN_PARAMS,
         ...(pluginParams ?? {}),
       });
 
@@ -40,7 +42,7 @@ export const demoMotionPlugin = Object.freeze({
     const resolvedContext =
       sceneContext ??
       resolveDemoMotionSceneContext({
-        ...DEFAULT_DEMO_MOTION_PROPS,
+        ...DEFAULT_DEMO_MOTION_PLUGIN_PARAMS,
         ...(pluginParams ?? {}),
       });
 
@@ -55,7 +57,7 @@ export const demoMotionPlugin = Object.freeze({
     const resolvedContext =
       sceneContext ??
       resolveDemoMotionSceneContext({
-        ...DEFAULT_DEMO_MOTION_PROPS,
+        ...DEFAULT_DEMO_MOTION_PLUGIN_PARAMS,
         ...(pluginParams ?? {}),
       });
 

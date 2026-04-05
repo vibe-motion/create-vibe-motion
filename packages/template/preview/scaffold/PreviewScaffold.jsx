@@ -220,6 +220,7 @@ export const PreviewScaffold = ({
       return (
         <PluginParamsPanel
           title={plugin.controlPanelTitle}
+          description={plugin.controlPanelDescription}
           fields={plugin.paramFields}
           pluginParams={pluginParams}
           onUpdateParam={updateParam}

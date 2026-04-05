@@ -29,6 +29,12 @@ A feature plugin should provide:
 
 Animation logic in `buildSceneProps` should be frame-deterministic (pure function of inputs) because Remotion may render frames out of order/in parallel.
 
+### Parameter Semantics
+
+- Keep `videoWidth` / `videoHeight` as video layout params.
+- Treat other params in `defaultProps` and `paramFields` as current-feature animation params.
+- When replacing the default animation/plugin, replace those animation params together with scene logic.
+
 ## How To Switch Feature
 
 1. Add a new plugin under `shared/features/<your-feature>/...` (current default example: `shared/features/demoMotion`).

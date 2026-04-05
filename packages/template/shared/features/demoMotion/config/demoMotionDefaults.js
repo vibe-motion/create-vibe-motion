@@ -20,10 +20,33 @@ const toText = (value, fallback) => {
   return resolved.length > 0 ? resolved : fallback;
 };
 
+const toBoolean = (value, fallback) => {
+  if (typeof value === "boolean") {
+    return value;
+  }
+
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return value !== 0;
+  }
+
+  if (typeof value === "string") {
+    const normalized = value.trim().toLowerCase();
+    if (["true", "1", "yes", "on", "dark"].includes(normalized)) {
+      return true;
+    }
+    if (["false", "0", "no", "off", "light"].includes(normalized)) {
+      return false;
+    }
+  }
+
+  return fallback;
+};
+
 export const DEFAULT_DEMO_MOTION_PROPS = Object.freeze({
   title: "Scaffold Demo",
   subtitle: "Replace this scene with any React component animation.",
   badgeText: "Vibe Motion",
+  cardDarkMode: false,
   videoWidth: 480,
   videoHeight: 480,
   durationSeconds: 3,
@@ -51,6 +74,12 @@ export const DEMO_MOTION_PARAM_FIELDS = Object.freeze([
     key: "badgeText",
     label: "badgeText",
     control: "text",
+    section: "primary",
+  },
+  {
+    key: "cardDarkMode",
+    label: "darkCard",
+    control: "switch",
     section: "primary",
   },
   {
@@ -123,6 +152,8 @@ export const normalizeDemoMotionParamValue = ({ key, rawValue, currentValue } = 
       return toText(rawValue, DEFAULT_DEMO_MOTION_PROPS.subtitle);
     case "badgeText":
       return toText(rawValue, DEFAULT_DEMO_MOTION_PROPS.badgeText);
+    case "cardDarkMode":
+      return toBoolean(rawValue, DEFAULT_DEMO_MOTION_PROPS.cardDarkMode);
     case "videoWidth":
       return toInt(rawValue, DEFAULT_DEMO_MOTION_PROPS.videoWidth, 480, 1280);
     case "videoHeight":

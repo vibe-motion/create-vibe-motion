@@ -71,6 +71,23 @@ const renderFieldControl = (field, value, onUpdateParam) => {
     );
   }
 
+  if (field.control === "switch") {
+    const isEnabled = value === true;
+    return (
+      <div className="flex items-center gap-3">
+        <input
+          className="h-4 w-4 cursor-pointer accent-slate-700"
+          type="checkbox"
+          checked={isEnabled}
+          onChange={(event) => onUpdateParam(field.key, event.target.checked)}
+        />
+        <span className="font-mono text-xs text-slate-600">
+          {isEnabled ? "dark" : "light"}
+        </span>
+      </div>
+    );
+  }
+
   return (
     <input
       className="w-full rounded border border-slate-300 bg-white px-2 py-1 font-mono text-xs text-slate-800"

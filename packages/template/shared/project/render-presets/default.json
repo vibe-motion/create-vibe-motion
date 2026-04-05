@@ -2,6 +2,7 @@
   "title": "Scaffold Demo",
   "subtitle": "Replace this scene with your own component and animation timeline.",
   "badgeText": "Vibe Motion",
+  "cardDarkMode": false,
   "videoWidth": 480,
   "videoHeight": 480,
   "durationSeconds": 3,

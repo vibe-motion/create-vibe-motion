@@ -6,6 +6,7 @@ export const DemoMotionScene = ({
   title,
   subtitle,
   badgeText,
+  cardDarkMode,
   accentHue,
   backgroundHue,
   orbitX,
@@ -22,6 +23,30 @@ export const DemoMotionScene = ({
   }, [onAutoLayoutReady]);
 
   const s = (layout?.videoWidth ?? 1080) / 1080;
+  const isDarkCard = Boolean(cardDarkMode);
+  const cardSurfaceStyle = isDarkCard
+    ? {
+        backgroundColor: "hsl(224 38% 13% / 0.78)",
+        borderColor: "hsl(214 32% 75% / 0.34)",
+        boxShadow: `0 ${34 * s}px ${92 * s}px rgba(2, 6, 23, 0.52)`,
+      }
+    : {
+        backgroundColor: "hsl(0 0% 100% / 0.8)",
+        borderColor: "hsl(0 0% 100% / 0.65)",
+        boxShadow: `0 ${30 * s}px ${80 * s}px rgba(15,23,42,0.2)`,
+      };
+
+  const badgeStyle = isDarkCard
+    ? {
+        color: `hsl(${hue(accentHue, 2)} 94% 86%)`,
+        backgroundColor: `hsl(${hue(accentHue, 4)} 86% 56% / 0.22)`,
+        borderColor: `hsl(${hue(accentHue, 8)} 82% 68% / 0.55)`,
+      }
+    : {
+        color: `hsl(${hue(accentHue, -14)} 82% 28%)`,
+        backgroundColor: `hsl(${hue(accentHue, 28)} 95% 78% / 0.5)`,
+        borderColor: `hsl(${hue(accentHue, 8)} 80% 62% / 0.5)`,
+      };
 
   return (
     <div
@@ -63,27 +88,31 @@ export const DemoMotionScene = ({
       />
 
       <div
-        className="absolute rounded-full border border-white/55 bg-white/70 backdrop-blur"
+        className={`absolute rounded-full border backdrop-blur ${
+          isDarkCard ? "border-white/25 bg-slate-900/65" : "border-white/55 bg-white/70"
+        }`}
         style={{
           width: 18 * s,
           height: 18 * s,
           left: `calc(50% + ${orbitX}px)`,
           top: `calc(50% + ${orbitY}px)`,
           transform: "translate(-50%, -50%)",
-          boxShadow: `0 ${20 * s}px ${48 * s}px rgba(15,23,42,0.18)`,
+          boxShadow: isDarkCard
+            ? `0 ${22 * s}px ${54 * s}px rgba(2, 6, 23, 0.36)`
+            : `0 ${20 * s}px ${48 * s}px rgba(15,23,42,0.18)`,
         }}
       />
 
       <div className="absolute inset-0 flex items-center justify-center px-[8.5%] py-[10%]">
         <div
-          className="relative w-full border border-white/65 bg-white/80 backdrop-blur"
+          className="relative w-full border backdrop-blur"
           style={{
             maxWidth: 760 * s,
             borderRadius: 42 * s,
             padding: 48 * s,
-            boxShadow: `0 ${30 * s}px ${80 * s}px rgba(15,23,42,0.2)`,
             transform: `translate3d(${orbitX * 0.06}px, ${orbitY * 0.04}px, 0) rotate(${cardRotateDeg}deg) scale(${pulseScale})`,
             transformOrigin: "50% 50%",
+            ...cardSurfaceStyle,
           }}
         >
           <div
@@ -93,39 +122,47 @@ export const DemoMotionScene = ({
               padding: `${8 * s}px ${16 * s}px`,
               fontSize: 0.84 * s + "rem",
               letterSpacing: "0.08em",
-              color: `hsl(${hue(accentHue, -14)} 82% 28%)`,
-              backgroundColor: `hsl(${hue(accentHue, 28)} 95% 78% / 0.5)`,
-              borderColor: `hsl(${hue(accentHue, 8)} 80% 62% / 0.5)`,
               transform: `translateX(${chipOffset}px)`,
+              ...badgeStyle,
             }}
           >
             {badgeText}
           </div>
 
           <h1
-            className="font-semibold leading-[1.04] tracking-[-0.03em] text-slate-900"
+            className="font-semibold leading-[1.04] tracking-[-0.03em]"
             style={{
               fontSize: Math.round(48 * s) + "px",
-              textShadow: `0 ${8 * s}px ${24 * s}px rgba(148, 163, 184, 0.22)`,
+              color: isDarkCard ? "hsl(210 40% 98%)" : "hsl(222 47% 11%)",
+              textShadow: isDarkCard
+                ? `0 ${10 * s}px ${32 * s}px rgba(15, 23, 42, 0.45)`
+                : `0 ${8 * s}px ${24 * s}px rgba(148, 163, 184, 0.22)`,
             }}
           >
             {title}
           </h1>
 
           <p
-            className="leading-[1.42] text-slate-700"
+            className="leading-[1.42]"
             style={{
               marginTop: 24 * s,
               maxWidth: "88%",
               fontSize: Math.round(22 * s) + "px",
+              color: isDarkCard ? "hsl(215 26% 84%)" : "hsl(215 25% 37%)",
             }}
           >
             {subtitle}
           </p>
 
           <div
-            className="overflow-hidden rounded-full bg-slate-300/60"
-            style={{ marginTop: 40 * s, height: 10 * s }}
+            className="overflow-hidden rounded-full"
+            style={{
+              marginTop: 40 * s,
+              height: 10 * s,
+              backgroundColor: isDarkCard
+                ? "hsl(217 30% 27% / 0.56)"
+                : "hsl(215 23% 82% / 0.6)",
+            }}
           >
             <div
               className="h-full rounded-full"

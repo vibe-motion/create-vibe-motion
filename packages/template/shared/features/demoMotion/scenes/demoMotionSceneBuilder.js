@@ -37,6 +37,28 @@ const toText = (value, fallback) => {
   return resolved.length > 0 ? resolved : fallback;
 };
 
+const toBoolean = (value, fallback) => {
+  if (typeof value === "boolean") {
+    return value;
+  }
+
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return value !== 0;
+  }
+
+  if (typeof value === "string") {
+    const normalized = value.trim().toLowerCase();
+    if (["true", "1", "yes", "on", "dark"].includes(normalized)) {
+      return true;
+    }
+    if (["false", "0", "no", "off", "light"].includes(normalized)) {
+      return false;
+    }
+  }
+
+  return fallback;
+};
+
 export const resolveDemoMotionSceneContext = (pluginParams = {}) => {
   const videoWidth = toInt(pluginParams.videoWidth, DEFAULT_DEMO_MOTION_PROPS.videoWidth, 480, 1280);
   const videoHeight = toInt(
@@ -50,6 +72,10 @@ export const resolveDemoMotionSceneContext = (pluginParams = {}) => {
     title: toText(pluginParams.title, DEFAULT_DEMO_MOTION_PROPS.title),
     subtitle: toText(pluginParams.subtitle, DEFAULT_DEMO_MOTION_PROPS.subtitle),
     badgeText: toText(pluginParams.badgeText, DEFAULT_DEMO_MOTION_PROPS.badgeText),
+    cardDarkMode: toBoolean(
+      pluginParams.cardDarkMode,
+      DEFAULT_DEMO_MOTION_PROPS.cardDarkMode
+    ),
     speed: clamp(toNumber(pluginParams.speed, DEFAULT_DEMO_MOTION_PROPS.speed), 0, 1),
     orbitRadius: toInt(
       pluginParams.orbitRadius,

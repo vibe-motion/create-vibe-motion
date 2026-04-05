@@ -76,10 +76,10 @@ export const DEMO_MOTION_PARAM_FIELDS = Object.freeze([
   {
     key: "speed",
     label: "speed",
-    control: "number",
-    min: 0.2,
-    max: 4,
-    step: 0.1,
+    control: "range",
+    min: 0,
+    max: 1,
+    step: 0.01,
   },
   {
     key: "orbitRadius",
@@ -108,8 +108,8 @@ export const DEMO_MOTION_PARAM_FIELDS = Object.freeze([
   {
     key: "cardTiltMax",
     label: "cardTiltMax",
-    control: "number",
-    min: 0,
+    control: "range",
+    min: -30,
     max: 30,
     step: 1,
   },
@@ -130,7 +130,7 @@ export const normalizeDemoMotionParamValue = ({ key, rawValue, currentValue } = 
     case "durationSeconds":
       return clamp(toNumber(rawValue, DEFAULT_DEMO_MOTION_PROPS.durationSeconds), 1, 30);
     case "speed":
-      return clamp(toNumber(rawValue, DEFAULT_DEMO_MOTION_PROPS.speed), 0.2, 4);
+      return clamp(toNumber(rawValue, DEFAULT_DEMO_MOTION_PROPS.speed), 0, 1);
     case "orbitRadius":
       return toInt(rawValue, DEFAULT_DEMO_MOTION_PROPS.orbitRadius, 20, 480);
     case "accentHue":
@@ -138,7 +138,7 @@ export const normalizeDemoMotionParamValue = ({ key, rawValue, currentValue } = 
     case "backgroundHue":
       return toInt(rawValue, DEFAULT_DEMO_MOTION_PROPS.backgroundHue, 0, 360);
     case "cardTiltMax":
-      return clamp(toNumber(rawValue, DEFAULT_DEMO_MOTION_PROPS.cardTiltMax), 0, 30);
+      return clamp(toNumber(rawValue, DEFAULT_DEMO_MOTION_PROPS.cardTiltMax), -30, 30);
     default:
       return currentValue ?? rawValue;
   }

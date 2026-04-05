@@ -1,5 +1,19 @@
 import React from "react";
 
+const formatRangeValue = (value, step) => {
+  const numericValue = Number(value);
+  if (!Number.isFinite(numericValue)) {
+    return String(value ?? "");
+  }
+
+  const numericStep = Number(step);
+  const decimals =
+    Number.isFinite(numericStep) && numericStep > 0
+      ? Math.max(0, (String(step).split(".")[1] || "").length)
+      : 0;
+  return numericValue.toFixed(decimals);
+};
+
 const renderFieldControl = (field, value, onUpdateParam) => {
   if (field.control === "textarea") {
     return (
@@ -35,6 +49,25 @@ const renderFieldControl = (field, value, onUpdateParam) => {
           </option>
         ))}
       </select>
+    );
+  }
+
+  if (field.control === "range") {
+    return (
+      <div className="flex items-center gap-2">
+        <input
+          className="h-2 w-full cursor-pointer appearance-none rounded-lg bg-slate-200 accent-slate-700"
+          type="range"
+          min={field.min}
+          max={field.max}
+          step={field.step}
+          value={value}
+          onChange={(event) => onUpdateParam(field.key, event.target.value)}
+        />
+        <span className="min-w-10 text-right font-mono text-xs text-slate-600">
+          {formatRangeValue(value, field.step)}
+        </span>
+      </div>
     );
   }
 

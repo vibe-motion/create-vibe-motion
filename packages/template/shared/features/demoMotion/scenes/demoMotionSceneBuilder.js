@@ -50,7 +50,7 @@ export const resolveDemoMotionSceneContext = (pluginParams = {}) => {
     title: toText(pluginParams.title, DEFAULT_DEMO_MOTION_PROPS.title),
     subtitle: toText(pluginParams.subtitle, DEFAULT_DEMO_MOTION_PROPS.subtitle),
     badgeText: toText(pluginParams.badgeText, DEFAULT_DEMO_MOTION_PROPS.badgeText),
-    speed: clamp(toNumber(pluginParams.speed, DEFAULT_DEMO_MOTION_PROPS.speed), 0.2, 4),
+    speed: clamp(toNumber(pluginParams.speed, DEFAULT_DEMO_MOTION_PROPS.speed), 0, 1),
     orbitRadius: toInt(
       pluginParams.orbitRadius,
       DEFAULT_DEMO_MOTION_PROPS.orbitRadius,
@@ -66,7 +66,7 @@ export const resolveDemoMotionSceneContext = (pluginParams = {}) => {
     ),
     cardTiltMax: clamp(
       toNumber(pluginParams.cardTiltMax, DEFAULT_DEMO_MOTION_PROPS.cardTiltMax),
-      0,
+      -30,
       30
     ),
     durationSeconds: clamp(

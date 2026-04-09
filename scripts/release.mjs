@@ -28,7 +28,7 @@ console.log(`bumped: ${pkg.version.replace(next, "")}${next}`);
 const run = (cmd) => execSync(cmd, { cwd: root, stdio: "inherit" });
 
 run("node scripts/sync-template-to-cli.mjs");
-run("git add .");
+run("git add -A packages/create-vibe-motion/package.json packages/create-vibe-motion/template");
 run(`git commit -m "${next}"`);
 run(`git tag -a v${next} -m "v${next}"`);
 run("git push origin main --follow-tags");

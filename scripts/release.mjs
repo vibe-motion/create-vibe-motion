@@ -29,7 +29,6 @@ const run = (cmd) => execSync(cmd, { cwd: root, stdio: "inherit" });
 
 run("node scripts/sync-template-to-cli.mjs");
 run("git add packages/create-vibe-motion/package.json");
-run("git add -u packages/create-vibe-motion/template");
 run(`git commit -m "${next}"`);
 run(`git tag -a v${next} -m "v${next}"`);
 run("git push origin main --follow-tags");

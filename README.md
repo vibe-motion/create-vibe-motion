@@ -16,7 +16,18 @@ cd my-app
 pnpm dev
 ```
 
-Dependencies are installed automatically after scaffolding (pnpm preferred, falls back to npm).
+To make the initial scaffold package download also use a mirror:
+
+```bash
+npm_config_registry=https://registry.npmmirror.com npx create-vibe-motion@latest my-app
+```
+
+Dependencies are installed automatically after scaffolding with pnpm only.
+
+If pnpm is missing, the scaffold first tries to install pnpm via npm, then continues with pnpm.
+
+By default, dependency installation uses `https://registry.npmmirror.com`.
+You can override it with `--registry=<url>` or `npm_config_registry`.
 
 If no directory is provided, it creates `./vibe-motion-app` by default.
 
@@ -28,6 +39,7 @@ On macOS, install triggers a shared Chrome Headless Shell check/install for Remo
 
 - `--force`: overwrite files when the target directory is not empty.
 - `--skip-install`: skip automatic dependency installation.
+- `--registry`: specify the package registry used for pnpm/npm bootstrap install.
 
 ## Repository Structure
 

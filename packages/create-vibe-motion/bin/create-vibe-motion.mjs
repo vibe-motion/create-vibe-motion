@@ -11,11 +11,43 @@ const MANIFEST_PATH = resolve(PACKAGE_ROOT, "scaffold-manifest.json");
 const TEMPLATE_PACKAGE_PATH = resolve(PACKAGE_ROOT, "scaffold-template-package.json");
 const TEMPLATE_GITIGNORE_PATH = resolve(PACKAGE_ROOT, "scaffold-template-gitignore");
 const DEFAULT_TARGET_DIRNAME = "vibe-motion-app";
+const DEFAULT_REGISTRY = "https://registry.npmmirror.com";
 
 const args = process.argv.slice(2);
+
+let registryFromArg = null;
+const positional = [];
+for (let index = 0; index < args.length; index += 1) {
+  const arg = args[index];
+
+  if (arg === "--registry") {
+    const nextValue = args[index + 1];
+    if (!nextValue || nextValue.startsWith("-")) {
+      throw new Error("[create-vibe-motion] missing value for --registry.");
+    }
+    registryFromArg = nextValue;
+    index += 1;
+    continue;
+  }
+
+  if (arg.startsWith("--registry=")) {
+    const value = arg.slice("--registry=".length);
+    if (value.trim().length === 0) {
+      throw new Error("[create-vibe-motion] missing value for --registry.");
+    }
+    registryFromArg = value;
+    continue;
+  }
+
+  if (arg.startsWith("-")) {
+    continue;
+  }
+
+  positional.push(arg);
+}
+
 const force = args.includes("--force") || args.includes("-f");
 const skipInstall = args.includes("--skip-install");
-const positional = args.filter((arg) => !arg.startsWith("-"));
 const targetArg = positional[0] ?? DEFAULT_TARGET_DIRNAME;
 const targetDir = resolve(process.cwd(), targetArg);
 
@@ -79,6 +111,46 @@ const readManifest = () => {
   }
   return parsed;
 };
+
+const resolveRequiredPnpmSpec = () => {
+  try {
+    const template = JSON.parse(readFileSync(TEMPLATE_PACKAGE_PATH, "utf8"));
+    const packageManager = typeof template.packageManager === "string" ? template.packageManager.trim() : "";
+    if (packageManager.startsWith("pnpm@")) {
+      return packageManager;
+    }
+  } catch {
+    // fall through
+  }
+
+  return "pnpm";
+};
+
+const normalizeRegistry = (value) => {
+  if (typeof value !== "string") {
+    return null;
+  }
+
+  const trimmed = value.trim();
+  if (trimmed.length === 0) {
+    return null;
+  }
+
+  return trimmed.replace(/\/+$/, "");
+};
+
+const resolveRegistry = () =>
+  normalizeRegistry(registryFromArg) ??
+  normalizeRegistry(process.env.CREATE_VIBE_MOTION_REGISTRY) ??
+  normalizeRegistry(process.env.npm_config_registry) ??
+  normalizeRegistry(process.env.NPM_CONFIG_REGISTRY) ??
+  DEFAULT_REGISTRY;
+
+const buildInstallEnv = (registry) => ({
+  ...process.env,
+  npm_config_registry: registry,
+  NPM_CONFIG_REGISTRY: registry,
+});
 
 const getCommandCandidates = (pm) => {
   if (process.platform !== "win32") {
@@ -184,13 +256,20 @@ const buildInstallerCandidates = () => {
   return candidates;
 };
 
-const detectInstaller = () => {
+const isInstallerAvailable = (candidate) => {
+  const check = spawnSync(candidate.cmd, candidate.checkArgs, {
+    stdio: "ignore",
+    shell: candidate.shell,
+  });
+  return !check.error && check.status === 0;
+};
+
+const detectInstallerByPm = (pm) => {
   for (const candidate of buildInstallerCandidates()) {
-    const check = spawnSync(candidate.cmd, candidate.checkArgs, {
-      stdio: "ignore",
-      shell: candidate.shell,
-    });
-    if (!check.error && check.status === 0) {
+    if (candidate.pm !== pm) {
+      continue;
+    }
+    if (isInstallerAvailable(candidate)) {
       return candidate;
     }
   }
@@ -198,33 +277,84 @@ const detectInstaller = () => {
   return null;
 };
 
-const formatInstallCommand = (pm) => (pm === "npm" ? "npm install" : `${pm} install`);
+const buildNpmGlobalInstallArgs = (npmInstaller, packageSpec, registry) => {
+  const prefixArgs = npmInstaller.installArgs.slice(0, -1);
+  return [...prefixArgs, "install", "--global", packageSpec, "--registry", registry];
+};
+
+const bootstrapPnpmWithNpm = (registry) => {
+  const npmInstaller = detectInstallerByPm("npm");
+  if (!npmInstaller) {
+    return null;
+  }
+
+  const pnpmSpec = resolveRequiredPnpmSpec();
+  console.log(`\nDetected npm but pnpm is missing. Installing ${pnpmSpec} globally...`);
+
+  const bootstrapResult = spawnSync(
+    npmInstaller.cmd,
+    buildNpmGlobalInstallArgs(npmInstaller, pnpmSpec, registry),
+    {
+      stdio: "inherit",
+      shell: npmInstaller.shell,
+      env: buildInstallEnv(registry),
+    }
+  );
+
+  if (bootstrapResult.error || (typeof bootstrapResult.status === "number" && bootstrapResult.status !== 0)) {
+    console.error(`\nFailed to install ${pnpmSpec}. Run \`npm install -g ${pnpmSpec}\` and retry.`);
+    return null;
+  }
+
+  const pnpmInstaller = detectInstallerByPm("pnpm");
+  if (!pnpmInstaller) {
+    console.error(`\nInstalled ${pnpmSpec}, but pnpm is still not available in PATH.`);
+    return null;
+  }
+
+  return pnpmInstaller;
+};
+
+const formatInstallCommand = (pm, registry) => {
+  const baseCommand = pm === "npm" ? "npm install" : `${pm} install`;
+  return `${baseCommand} --registry=${registry}`;
+};
 const formatDevCommand = (pm) => (pm === "npm" ? "npm run dev" : `${pm} dev`);
 
 const runInstall = () => {
-  const installer = detectInstaller();
-  if (!installer) {
-    console.log("\nCould not find pnpm or npm. Please install dependencies manually.");
+  const registry = resolveRegistry();
+  console.log(`\nUsing registry: ${registry}`);
+
+  let pnpmInstaller = detectInstallerByPm("pnpm");
+
+  if (!pnpmInstaller) {
+    pnpmInstaller = bootstrapPnpmWithNpm(registry);
+  }
+
+  if (!pnpmInstaller) {
+    console.log("\nCould not find pnpm or install it via npm. Please install pnpm and run `pnpm install` manually.");
     return null;
   }
 
-  const { pm, cmd, installArgs, shell } = installer;
-  console.log(`\nInstalling dependencies with ${pm}...`);
-  const result = spawnSync(cmd, installArgs, {
+  const { cmd, installArgs, shell } = pnpmInstaller;
+  console.log("\nInstalling dependencies with pnpm...");
+  const result = spawnSync(cmd, [...installArgs, "--registry", registry], {
     cwd: targetDir,
     stdio: "inherit",
     shell,
+    env: buildInstallEnv(registry),
   });
 
   if (result.error || (typeof result.status === "number" && result.status !== 0)) {
-    console.error(`\nInstall failed. Run \`${pm} install\` manually in the project directory.`);
+    console.error("\nInstall failed. Run `pnpm install` manually in the project directory.");
     return null;
   }
 
-  return pm;
+  return "pnpm";
 };
 
 const run = () => {
+  const registry = resolveRegistry();
   ensureTargetDir();
 
   const entries = readManifest();
@@ -243,13 +373,13 @@ const run = () => {
     installedWith = runInstall();
   }
 
-  const suggestedPm = installedWith ?? parsePreferredPm() ?? "pnpm";
+  const suggestedPm = installedWith ?? "pnpm";
   console.log("\nNext steps:");
   if (targetArg !== ".") {
     console.log(`  cd ${displayPath}`);
   }
   if (skipInstall) {
-    console.log(`  ${formatInstallCommand(suggestedPm)}`);
+    console.log(`  ${formatInstallCommand(suggestedPm, registry)}`);
   }
   console.log(`  ${formatDevCommand(suggestedPm)}`);
 };

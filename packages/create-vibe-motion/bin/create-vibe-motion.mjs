@@ -88,39 +88,140 @@ const getCommandCandidates = (pm) => {
   return [`${pm}.cmd`, `${pm}.exe`, pm];
 };
 
-const detectInstaller = () => {
-  for (const pm of ["pnpm", "npm"]) {
-    for (const cmd of getCommandCandidates(pm)) {
-      const check = spawnSync(cmd, ["--version"], { stdio: "ignore" });
-      if (!check.error && check.status === 0) {
-        return { pm, cmd };
-      }
+const parsePreferredPm = () => {
+  const userAgent = process.env.npm_config_user_agent ?? "";
+  if (userAgent.startsWith("pnpm/")) {
+    return "pnpm";
+  }
+  if (userAgent.startsWith("npm/")) {
+    return "npm";
+  }
+  return null;
+};
+
+const getPmPriority = () => {
+  const preferredPm = parsePreferredPm();
+  if (!preferredPm) {
+    return ["pnpm", "npm"];
+  }
+
+  return [preferredPm, ...["pnpm", "npm"].filter((pm) => pm !== preferredPm)];
+};
+
+const resolveBundledNpmCliPath = () => {
+  const nodeDir = dirname(process.execPath);
+  const candidates = [
+    resolve(nodeDir, "node_modules", "npm", "bin", "npm-cli.js"),
+    resolve(nodeDir, "..", "lib", "node_modules", "npm", "bin", "npm-cli.js"),
+  ];
+
+  for (const candidate of candidates) {
+    if (existsSync(candidate)) {
+      return candidate;
     }
   }
 
   return null;
 };
 
+const buildInstallerCandidates = () => {
+  const candidates = [];
+  const dedupe = new Set();
+
+  const pushCandidate = (candidate) => {
+    const key = JSON.stringify(candidate);
+    if (dedupe.has(key)) {
+      return;
+    }
+    dedupe.add(key);
+    candidates.push(candidate);
+  };
+
+  for (const pm of getPmPriority()) {
+    for (const cmd of getCommandCandidates(pm)) {
+      pushCandidate({
+        pm,
+        cmd,
+        checkArgs: ["--version"],
+        installArgs: ["install"],
+        shell: false,
+      });
+    }
+
+    if (process.platform === "win32") {
+      pushCandidate({
+        pm,
+        cmd: pm,
+        checkArgs: ["--version"],
+        installArgs: ["install"],
+        shell: true,
+      });
+    }
+  }
+
+  const npmExecPath = process.env.npm_execpath;
+  if (npmExecPath) {
+    pushCandidate({
+      pm: parsePreferredPm() ?? "npm",
+      cmd: process.execPath,
+      checkArgs: [npmExecPath, "--version"],
+      installArgs: [npmExecPath, "install"],
+      shell: false,
+    });
+  }
+
+  const bundledNpmCliPath = resolveBundledNpmCliPath();
+  if (bundledNpmCliPath) {
+    pushCandidate({
+      pm: "npm",
+      cmd: process.execPath,
+      checkArgs: [bundledNpmCliPath, "--version"],
+      installArgs: [bundledNpmCliPath, "install"],
+      shell: false,
+    });
+  }
+
+  return candidates;
+};
+
+const detectInstaller = () => {
+  for (const candidate of buildInstallerCandidates()) {
+    const check = spawnSync(candidate.cmd, candidate.checkArgs, {
+      stdio: "ignore",
+      shell: candidate.shell,
+    });
+    if (!check.error && check.status === 0) {
+      return candidate;
+    }
+  }
+
+  return null;
+};
+
+const formatInstallCommand = (pm) => (pm === "npm" ? "npm install" : `${pm} install`);
+const formatDevCommand = (pm) => (pm === "npm" ? "npm run dev" : `${pm} dev`);
+
 const runInstall = () => {
   const installer = detectInstaller();
   if (!installer) {
     console.log("\nCould not find pnpm or npm. Please install dependencies manually.");
-    return false;
+    return null;
   }
 
-  const { pm, cmd } = installer;
+  const { pm, cmd, installArgs, shell } = installer;
   console.log(`\nInstalling dependencies with ${pm}...`);
-  const result = spawnSync(cmd, ["install"], {
+  const result = spawnSync(cmd, installArgs, {
     cwd: targetDir,
     stdio: "inherit",
+    shell,
   });
 
   if (result.error || (typeof result.status === "number" && result.status !== 0)) {
     console.error(`\nInstall failed. Run \`${pm} install\` manually in the project directory.`);
-    return false;
+    return null;
   }
 
-  return true;
+  return pm;
 };
 
 const run = () => {
@@ -137,18 +238,20 @@ const run = () => {
   const displayPath = relative(process.cwd(), targetDir) || ".";
   console.log(`\nScaffold created at ${displayPath}`);
 
+  let installedWith = null;
   if (!skipInstall) {
-    runInstall();
+    installedWith = runInstall();
   }
 
+  const suggestedPm = installedWith ?? parsePreferredPm() ?? "pnpm";
   console.log("\nNext steps:");
   if (targetArg !== ".") {
     console.log(`  cd ${displayPath}`);
   }
   if (skipInstall) {
-    console.log("  pnpm install");
+    console.log(`  ${formatInstallCommand(suggestedPm)}`);
   }
-  console.log("  pnpm dev");
+  console.log(`  ${formatDevCommand(suggestedPm)}`);
 };
 
 try {

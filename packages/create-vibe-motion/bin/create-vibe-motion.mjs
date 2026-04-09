@@ -216,17 +216,6 @@ const buildInstallerCandidates = () => {
         cmd,
         checkArgs: ["--version"],
         installArgs: ["install"],
-        shell: false,
-      });
-    }
-
-    if (process.platform === "win32") {
-      pushCandidate({
-        pm,
-        cmd: pm,
-        checkArgs: ["--version"],
-        installArgs: ["install"],
-        shell: true,
       });
     }
   }
@@ -238,7 +227,6 @@ const buildInstallerCandidates = () => {
       cmd: process.execPath,
       checkArgs: [npmExecPath, "--version"],
       installArgs: [npmExecPath, "install"],
-      shell: false,
     });
   }
 
@@ -249,7 +237,6 @@ const buildInstallerCandidates = () => {
       cmd: process.execPath,
       checkArgs: [bundledNpmCliPath, "--version"],
       installArgs: [bundledNpmCliPath, "install"],
-      shell: false,
     });
   }
 
@@ -259,7 +246,6 @@ const buildInstallerCandidates = () => {
 const isInstallerAvailable = (candidate) => {
   const check = spawnSync(candidate.cmd, candidate.checkArgs, {
     stdio: "ignore",
-    shell: candidate.shell,
   });
   return !check.error && check.status === 0;
 };
@@ -296,7 +282,6 @@ const bootstrapPnpmWithNpm = (registry) => {
     buildNpmGlobalInstallArgs(npmInstaller, pnpmSpec, registry),
     {
       stdio: "inherit",
-      shell: npmInstaller.shell,
       env: buildInstallEnv(registry),
     }
   );
@@ -336,12 +321,11 @@ const runInstall = () => {
     return null;
   }
 
-  const { cmd, installArgs, shell } = pnpmInstaller;
+  const { cmd, installArgs } = pnpmInstaller;
   console.log("\nInstalling dependencies with pnpm...");
   const result = spawnSync(cmd, [...installArgs, "--registry", registry], {
     cwd: targetDir,
     stdio: "inherit",
-    shell,
     env: buildInstallEnv(registry),
   });
 

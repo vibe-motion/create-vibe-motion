@@ -160,6 +160,8 @@ const getCommandCandidates = (pm) => {
   return [`${pm}.cmd`, `${pm}.exe`, pm];
 };
 
+const resolveComSpec = () => process.env.ComSpec || process.env.COMSPEC || "cmd.exe";
+
 const parsePreferredPm = () => {
   const userAgent = process.env.npm_config_user_agent ?? "";
   if (userAgent.startsWith("pnpm/")) {
@@ -216,6 +218,17 @@ const buildInstallerCandidates = () => {
         cmd,
         checkArgs: ["--version"],
         installArgs: ["install"],
+        viaCmd: false,
+      });
+    }
+
+    if (process.platform === "win32") {
+      pushCandidate({
+        pm,
+        cmd: pm,
+        checkArgs: ["--version"],
+        installArgs: ["install"],
+        viaCmd: true,
       });
     }
   }
@@ -227,6 +240,7 @@ const buildInstallerCandidates = () => {
       cmd: process.execPath,
       checkArgs: [npmExecPath, "--version"],
       installArgs: [npmExecPath, "install"],
+      viaCmd: false,
     });
   }
 
@@ -237,14 +251,23 @@ const buildInstallerCandidates = () => {
       cmd: process.execPath,
       checkArgs: [bundledNpmCliPath, "--version"],
       installArgs: [bundledNpmCliPath, "install"],
+      viaCmd: false,
     });
   }
 
   return candidates;
 };
 
+const runInstallerCommand = (candidate, args, options) => {
+  if (candidate.viaCmd && process.platform === "win32") {
+    return spawnSync(resolveComSpec(), ["/d", "/c", candidate.cmd, ...args], options);
+  }
+
+  return spawnSync(candidate.cmd, args, options);
+};
+
 const isInstallerAvailable = (candidate) => {
-  const check = spawnSync(candidate.cmd, candidate.checkArgs, {
+  const check = runInstallerCommand(candidate, candidate.checkArgs, {
     stdio: "ignore",
   });
   return !check.error && check.status === 0;
@@ -277,8 +300,8 @@ const bootstrapPnpmWithNpm = (registry) => {
   const pnpmSpec = resolveRequiredPnpmSpec();
   console.log(`\nDetected npm but pnpm is missing. Installing ${pnpmSpec} globally...`);
 
-  const bootstrapResult = spawnSync(
-    npmInstaller.cmd,
+  const bootstrapResult = runInstallerCommand(
+    npmInstaller,
     buildNpmGlobalInstallArgs(npmInstaller, pnpmSpec, registry),
     {
       stdio: "inherit",
@@ -321,9 +344,9 @@ const runInstall = () => {
     return null;
   }
 
-  const { cmd, installArgs } = pnpmInstaller;
+  const { installArgs } = pnpmInstaller;
   console.log("\nInstalling dependencies with pnpm...");
-  const result = spawnSync(cmd, [...installArgs, "--registry", registry], {
+  const result = runInstallerCommand(pnpmInstaller, [...installArgs, "--registry", registry], {
     cwd: targetDir,
     stdio: "inherit",
     env: buildInstallEnv(registry),

@@ -80,23 +80,36 @@ const readManifest = () => {
   return parsed;
 };
 
-const detectInstaller = () => {
-  for (const cmd of ["pnpm", "npm"]) {
-    const check = spawnSync(cmd, ["--version"], { stdio: "ignore" });
-    if (!check.error) return cmd;
+const getCommandCandidates = (pm) => {
+  if (process.platform !== "win32") {
+    return [pm];
   }
+
+  return [`${pm}.cmd`, `${pm}.exe`, pm];
+};
+
+const detectInstaller = () => {
+  for (const pm of ["pnpm", "npm"]) {
+    for (const cmd of getCommandCandidates(pm)) {
+      const check = spawnSync(cmd, ["--version"], { stdio: "ignore" });
+      if (!check.error && check.status === 0) {
+        return { pm, cmd };
+      }
+    }
+  }
+
   return null;
 };
 
 const runInstall = () => {
-  const pm = detectInstaller();
-  if (!pm) {
+  const installer = detectInstaller();
+  if (!installer) {
     console.log("\nCould not find pnpm or npm. Please install dependencies manually.");
     return false;
   }
 
+  const { pm, cmd } = installer;
   console.log(`\nInstalling dependencies with ${pm}...`);
-  const cmd = process.platform === "win32" ? `${pm}.cmd` : pm;
   const result = spawnSync(cmd, ["install"], {
     cwd: targetDir,
     stdio: "inherit",

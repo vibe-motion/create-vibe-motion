@@ -98,9 +98,56 @@ const resolveLocalDownloadedBrowserDirectory = (platformTag) =>
     `chrome-headless-shell-${platformTag}`
   );
 
+const resolveRemotionCliEntryPath = () => {
+  const remotionCliPackagePath = resolve(
+    process.cwd(),
+    "node_modules",
+    "@remotion",
+    "cli",
+    "package.json"
+  );
+  if (!existsSync(remotionCliPackagePath)) {
+    throw new Error(
+      `[create-vibe-motion] missing @remotion/cli dependency at ${remotionCliPackagePath}. Run npm install before running Remotion commands.`
+    );
+  }
+
+  const parsed = JSON.parse(readFileSync(remotionCliPackagePath, "utf8"));
+  const binField = parsed.bin;
+  const binRelativePath =
+    typeof binField === "string"
+      ? binField
+      : typeof binField === "object" &&
+          binField !== null &&
+          typeof binField.remotion === "string"
+        ? binField.remotion
+        : "";
+
+  if (binRelativePath.trim().length === 0) {
+    throw new Error(
+      `[create-vibe-motion] invalid @remotion/cli bin entry in ${remotionCliPackagePath}.`
+    );
+  }
+
+  return resolve(dirname(remotionCliPackagePath), binRelativePath);
+};
+
+export const runLocalRemotionCli = ({ args, stdio = "inherit", env = process.env } = {}) => {
+  if (!Array.isArray(args) || args.some((arg) => typeof arg !== "string")) {
+    throw new Error("[create-vibe-motion] runLocalRemotionCli expects string args.");
+  }
+
+  const remotionCliEntryPath = resolveRemotionCliEntryPath();
+  return spawnSync(process.execPath, [remotionCliEntryPath, ...args], {
+    stdio,
+    env,
+  });
+};
+
 const runRemotionBrowserEnsure = ({ log }) => {
-  log(`Cache miss. Running \`pnpm exec remotion browser ensure\` in project context.`);
-  const result = spawnSync("pnpm", ["exec", "remotion", "browser", "ensure"], {
+  log("Cache miss. Running `remotion browser ensure` with local @remotion/cli.");
+  const result = runLocalRemotionCli({
+    args: ["browser", "ensure"],
     stdio: "inherit",
     env: process.env,
   });

@@ -1,5 +1,4 @@
-import { spawnSync } from "node:child_process";
-import { ensureSharedBrowserExecutable } from "./remotion-browser-executable.mjs";
+import { ensureSharedBrowserExecutable, runLocalRemotionCli } from "./remotion-browser-executable.mjs";
 
 const run = async () => {
   const cliArgs = process.argv.slice(2);
@@ -12,7 +11,7 @@ const run = async () => {
     logPrefix: "[Remotion][Browser]",
   });
 
-  const remotionArgs = ["remotion", ...cliArgs];
+  const remotionArgs = [...cliArgs];
   if (browserExecutable && !cliArgs.includes("--browser-executable")) {
     remotionArgs.push("--browser-executable", browserExecutable);
   }
@@ -21,10 +20,11 @@ const run = async () => {
     ? { ...process.env, REMOTION_BROWSER_EXECUTABLE: browserExecutable }
     : process.env;
 
-  const commandForLog = ["pnpm", "exec", ...remotionArgs].join(" ");
+  const commandForLog = ["remotion", ...remotionArgs].join(" ");
   console.log(`[Remotion] running ${commandForLog}`);
 
-  const result = spawnSync("pnpm", ["exec", ...remotionArgs], {
+  const result = runLocalRemotionCli({
+    args: remotionArgs,
     stdio: "inherit",
     env,
   });

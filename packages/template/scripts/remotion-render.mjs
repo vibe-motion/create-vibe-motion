@@ -1,8 +1,7 @@
-import { spawnSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { ACTIVE_COMPOSITION_ID } from "../shared/project/projectConfig.js";
-import { ensureSharedBrowserExecutable } from "./remotion-browser-executable.mjs";
+import { ensureSharedBrowserExecutable, runLocalRemotionCli } from "./remotion-browser-executable.mjs";
 
 const DEFAULT_CODEC = "prores";
 const DEFAULT_PRORES_PROFILE = "4444";
@@ -55,7 +54,6 @@ const run = async () => {
   });
 
   const args = [
-    "remotion",
     "render",
     compositionId,
     outputPath,
@@ -94,7 +92,11 @@ const run = async () => {
     console.log(`[Remotion] browserExecutable=${browserExecutable}`);
   }
 
-  const result = spawnSync("pnpm", ["exec", ...args], { stdio: "inherit", env });
+  const result = runLocalRemotionCli({
+    args,
+    stdio: "inherit",
+    env,
+  });
 
   if (result.error) {
     console.error(`[Remotion] failed to run render: ${result.error.message}`);

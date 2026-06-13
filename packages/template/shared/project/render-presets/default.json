@@ -3,12 +3,9 @@
   "subtitle": "Replace this scene with your own component and animation timeline.",
   "badgeText": "Vibe Motion",
   "cardDarkMode": false,
-  "videoWidth": 480,
-  "videoHeight": 480,
+  "videoWidth": 1080,
+  "videoHeight": 1440,
   "durationSeconds": 3,
   "speed": 1,
-  "orbitRadius": 180,
-  "accentHue": 210,
-  "backgroundHue": 195,
   "cardTiltMax": 12
 }

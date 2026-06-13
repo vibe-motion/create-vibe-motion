@@ -70,7 +70,7 @@ export const resolveDemoMotionSceneContext = (pluginParams = {}) => {
     pluginParams.videoHeight,
     DEFAULT_DEMO_MOTION_PLUGIN_PARAMS.videoHeight,
     480,
-    1280
+    1440
   );
 
   return {
@@ -82,24 +82,6 @@ export const resolveDemoMotionSceneContext = (pluginParams = {}) => {
       DEFAULT_DEMO_MOTION_PLUGIN_PARAMS.cardDarkMode
     ),
     speed: clamp(toNumber(pluginParams.speed, DEFAULT_DEMO_MOTION_PLUGIN_PARAMS.speed), 0, 1),
-    orbitRadius: toInt(
-      pluginParams.orbitRadius,
-      DEFAULT_DEMO_MOTION_PLUGIN_PARAMS.orbitRadius,
-      20,
-      480
-    ),
-    accentHue: toInt(
-      pluginParams.accentHue,
-      DEFAULT_DEMO_MOTION_PLUGIN_PARAMS.accentHue,
-      0,
-      360
-    ),
-    backgroundHue: toInt(
-      pluginParams.backgroundHue,
-      DEFAULT_DEMO_MOTION_PLUGIN_PARAMS.backgroundHue,
-      0,
-      360
-    ),
     cardTiltMax: clamp(
       toNumber(pluginParams.cardTiltMax, DEFAULT_DEMO_MOTION_PLUGIN_PARAMS.cardTiltMax),
       -30,
@@ -146,9 +128,6 @@ export const buildDemoMotionSceneProps = ({
   const progress = durationInFrames <= 1 ? 0 : boundedFrame / (durationInFrames - 1);
   const theta = progress * Math.PI * 2 * resolvedContext.speed;
 
-  const orbitX = Math.cos(theta) * resolvedContext.orbitRadius;
-  const orbitY = Math.sin(theta * 1.25) * resolvedContext.orbitRadius * 0.55;
-  const pulseScale = 0.92 + (Math.sin(theta * 2.2) + 1) * 0.05;
   const cardRotateDeg = Math.sin(theta * 0.8) * resolvedContext.cardTiltMax;
   const chipOffset = Math.sin(theta * 1.6) * 24;
 
@@ -157,9 +136,6 @@ export const buildDemoMotionSceneProps = ({
     durationInFrames,
     frame: boundedFrame,
     progress,
-    orbitX,
-    orbitY,
-    pulseScale,
     cardRotateDeg,
     chipOffset,
   };

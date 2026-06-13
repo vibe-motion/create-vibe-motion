@@ -29,6 +29,13 @@ A feature plugin should provide:
 
 Animation logic in `buildSceneProps` should be frame-deterministic (pure function of inputs) because Remotion may render frames out of order/in parallel.
 
+### Preview Controls
+
+- Use `control: "slider"` with `min`, `max`, and `step` for bounded numeric params.
+- Legacy `control: "number"` and `control: "range"` fields are rendered as sliders too; the preview never uses browser number steppers.
+- Available controls are `text`, `textarea`, `select`, `switch`, and `slider`.
+- The preview panel can copy the current flat `pluginParams` object as JSON.
+
 ### Parameter Semantics
 
 - Keep `videoWidth` / `videoHeight` as video layout params.

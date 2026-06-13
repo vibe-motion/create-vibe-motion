@@ -88,6 +88,8 @@ export const DEMO_MOTION_PARAM_FIELDS = Object.freeze([
     label: "darkCard",
     control: "switch",
     section: "primary",
+    trueLabel: "Dark",
+    falseLabel: "Light",
   },
   {
     key: "videoWidth",
@@ -106,7 +108,7 @@ export const DEMO_MOTION_PARAM_FIELDS = Object.freeze([
   {
     key: "durationSeconds",
     label: "durationSeconds",
-    control: "number",
+    control: "slider",
     section: "animation",
     min: 1,
     max: 30,
@@ -115,7 +117,7 @@ export const DEMO_MOTION_PARAM_FIELDS = Object.freeze([
   {
     key: "speed",
     label: "speed",
-    control: "range",
+    control: "slider",
     section: "animation",
     min: 0,
     max: 1,
@@ -124,7 +126,7 @@ export const DEMO_MOTION_PARAM_FIELDS = Object.freeze([
   {
     key: "cardTiltMax",
     label: "cardTiltMax",
-    control: "range",
+    control: "slider",
     section: "animation",
     min: -30,
     max: 30,

@@ -11,17 +11,17 @@ export const PreviewShell = ({
   children,
 }) => {
   return (
-    <div className="flex h-screen flex-col gap-4 bg-[#eef2f6] p-4 text-slate-900 lg:flex-row">
-      <div className="min-h-0 lg:h-full lg:w-[400px] lg:shrink-0">
-        <div className="scaffold-scrollbar mx-auto h-full w-[min(1160px,96vw)] rounded-2xl border border-slate-300 bg-white/90 p-4 shadow-[0_12px_28px_rgba(15,23,42,0.12)] backdrop-blur lg:mx-0 lg:w-full lg:overflow-y-auto">
+    <div className="preview-workbench">
+      <aside className="preview-controls" aria-label="Preview controls">
+        <div className="preview-controls-card scaffold-scrollbar">
           {controlPanel}
         </div>
-      </div>
+      </aside>
 
-      <div className="min-h-0 flex-1">
+      <main className="preview-canvas">
         <div
           ref={previewViewportRef}
-          className="flex h-full w-full items-center justify-center overflow-hidden rounded-2xl border border-slate-300 bg-[linear-gradient(135deg,#fcfcfc_0%,#f0f0f0_100%)]"
+          className="preview-viewport"
         >
           <div className="relative" style={{ width: stageDisplayWidth, height: stageDisplayHeight }}>
             <div
@@ -42,7 +42,7 @@ export const PreviewShell = ({
             </div>
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 };

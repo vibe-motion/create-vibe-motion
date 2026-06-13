@@ -1,6 +1,6 @@
 {
   "name": "create-vibe-motion",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Create a new Vibe Motion Remotion scaffold project",
   "type": "module",
   "bin": {

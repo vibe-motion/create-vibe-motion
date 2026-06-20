@@ -72,3 +72,15 @@ Then replace only:
 - `remotion:*`: remotion lifecycle (`remotion:studio`, `remotion:compositions`, `remotion:render`)
 - `deploy:*`: deployment helper commands
 - short alias `dev` is kept for convenience
+
+## Studio audio tracks
+
+Drag one or more audio files from the system file manager onto the Remotion Studio
+timeline. The horizontal drop position becomes the audio start frame. Imported files
+are copied to `public/audio`, while track placement is persisted in
+`public/.vibe-motion/audio-tracks.json`, so Studio preview and CLI rendering use the
+same audio tracks.
+
+The Studio reconciles the manifest with `public` on startup and whenever that
+folder changes. Deleting an imported file removes its stale track automatically.
+Deleting the manifest clears all tracks and recreates an empty manifest.

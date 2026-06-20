@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   AbsoluteFill,
+  Sequence,
   cancelRender,
   continueRender,
   delayRender,
@@ -12,10 +13,11 @@ import {
   resolvePluginSceneProps,
 } from "../pluginRuntime.js";
 import { useCurrentFrame, useVideoConfig } from "remotion";
+import { ScaffoldAudioTracks } from "./ScaffoldAudioTracks.jsx";
 
 export const ScaffoldVideo = ({ plugin, ...rawPluginParams }) => {
   const frame = useCurrentFrame();
-  const { fps, width, height } = useVideoConfig();
+  const { durationInFrames, fps, width, height } = useVideoConfig();
   const waitsForSceneLayoutReady = plugin?.waitForSceneLayoutReady === true;
   const [fontHandle] = useState(() => delayRender("Waiting for layout to settle"));
   const readinessRef = useRef({
@@ -125,8 +127,11 @@ export const ScaffoldVideo = ({ plugin, ...rawPluginParams }) => {
 
   return (
     <AbsoluteFill style={{ backgroundColor: "transparent", overflow: "hidden" }}>
+      <ScaffoldAudioTracks />
       {SceneComponent ? (
-        <SceneComponent {...sceneProps} onAutoLayoutReady={handleAutoLayoutReady} />
+        <Sequence from={0} durationInFrames={durationInFrames} name="动画">
+          <SceneComponent {...sceneProps} onAutoLayoutReady={handleAutoLayoutReady} />
+        </Sequence>
       ) : null}
     </AbsoluteFill>
   );

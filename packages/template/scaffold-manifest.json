@@ -4,6 +4,7 @@
   "remotion.config.js",
   "vite.config.js",
   "preview",
+  "public",
   "remotion",
   "scripts/remotion-browser-executable.mjs",
   "scripts/remotion-cli.mjs",

@@ -120,3 +120,46 @@ export const setCompositionAudioTracks = ({
     },
   };
 };
+
+export const removeAudioTrackAndFileReferences = ({
+  manifest,
+  compositionId,
+  trackId,
+}) => {
+  const normalizedManifest = normalizeAudioTrackManifest(manifest);
+  const targetTrack = normalizedManifest.compositions[compositionId]?.find(
+    (track) => track.id === trackId
+  );
+
+  if (!targetTrack) {
+    return {
+      manifest: normalizedManifest,
+      removedTrackCount: 0,
+      targetTrack: null,
+    };
+  }
+
+  let removedTrackCount = 0;
+  const compositions = Object.fromEntries(
+    Object.entries(normalizedManifest.compositions).map(
+      ([nextCompositionId, tracks]) => {
+        const remainingTracks = tracks.filter((track) => {
+          const shouldRemove = track.src === targetTrack.src;
+          if (shouldRemove) {
+            removedTrackCount += 1;
+          }
+
+          return !shouldRemove;
+        });
+
+        return [nextCompositionId, remainingTracks];
+      }
+    )
+  );
+
+  return {
+    manifest: { ...normalizedManifest, compositions },
+    removedTrackCount,
+    targetTrack,
+  };
+};

@@ -77,6 +77,10 @@ are copied to `public/audio`, while track placement is persisted in
 `public/.vibe-motion/audio-tracks.json`, so Studio preview and CLI rendering use the
 same audio tracks.
 
+Imported tracks appear in a small Remotion Studio panel. Deleting a track from
+that panel removes the manifest entry and deletes the corresponding file from
+`public/audio`.
+
 The Studio reconciles the manifest with `public` on startup and whenever that
 folder changes. Deleting an imported file removes its stale track automatically.
 Deleting the manifest clears all tracks and recreates an empty manifest.

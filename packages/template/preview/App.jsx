@@ -2,7 +2,7 @@ import { ACTIVE_COMPOSITION, ACTIVE_PLUGIN } from "../shared/project/activeProje
 import { PreviewScaffold } from "./scaffold/PreviewScaffold.jsx";
 
 function App() {
-  return <PreviewScaffold plugin={ACTIVE_PLUGIN} fps={ACTIVE_COMPOSITION.fps} loop />;
+  return <PreviewScaffold plugin={ACTIVE_PLUGIN} fps={ACTIVE_COMPOSITION.fps} />;
 }
 
 export default App;

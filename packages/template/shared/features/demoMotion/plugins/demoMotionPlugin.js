@@ -1,8 +1,4 @@
-import {
-  DEFAULT_DEMO_MOTION_PLUGIN_PARAMS,
-  DEMO_MOTION_PARAM_FIELDS,
-  normalizeDemoMotionParamValue,
-} from "../config/demoMotionDefaults.js";
+import { DEFAULT_DEMO_MOTION_PLUGIN_PARAMS } from "../config/demoMotionDefaults.js";
 import { DemoMotionScene } from "../scenes/DemoMotionScene.jsx";
 import {
   buildDemoMotionSceneProps,
@@ -12,14 +8,8 @@ import {
 
 export const demoMotionPlugin = Object.freeze({
   id: "demo-motion",
-  controlPanelTitle: "Template Parameters",
-  controlPanelDescription:
-    "videoWidth/videoHeight are video layout params. The rest belong to the default demoMotion scene and should be replaced when you swap to a new animation.",
-  paramFields: DEMO_MOTION_PARAM_FIELDS,
   defaultProps: DEFAULT_DEMO_MOTION_PLUGIN_PARAMS,
   SceneComponent: DemoMotionScene,
-  normalizeParamValue: ({ key, rawValue, currentValue }) =>
-    normalizeDemoMotionParamValue({ key, rawValue, currentValue }),
   resolveSceneContext: (pluginParams) =>
     resolveDemoMotionSceneContext({
       ...DEFAULT_DEMO_MOTION_PLUGIN_PARAMS,

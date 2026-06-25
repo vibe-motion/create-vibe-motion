@@ -4,7 +4,7 @@ This project now separates scaffold runtime from feature logic.
 
 ## Directory Split
 
-- `preview/*`: left-UI + right-preview shell and controls.
+- `preview/*`: static first-frame preview shell.
 - `remotion/*`: project-level remotion entry wrappers only.
 - `shared/scaffold/*`: common plugin runtime helpers (pure scaffold layer).
 - `shared/scaffold/remotion/*`: remotion runtime (pure scaffold layer).
@@ -22,24 +22,20 @@ A feature plugin should provide:
 - `getDurationInFrames({ fps, sceneContext, pluginParams })`
 - `buildSceneProps({ frame, fps, loop, sceneContext, pluginParams })`
 - `getLayout({ sceneContext, sceneProps, pluginParams })`
-- `normalizeParamValue(...)` (optional)
-- `paramFields` + `controlPanelTitle` (optional, for preview panel)
 - `renderScene(...)` (optional, preview-only custom render)
 - `waitForSceneLayoutReady` (optional, default `false`; set `true` if scene needs async layout settle before render continue)
 
 Animation logic in `buildSceneProps` should be frame-deterministic (pure function of inputs) because Remotion may render frames out of order/in parallel.
 
-### Preview Controls
+### Preview
 
-- Use `control: "slider"` with `min`, `max`, and `step` for bounded numeric params.
-- Legacy `control: "number"` and `control: "range"` fields are rendered as sliders too; the preview never uses browser number steppers.
-- Available controls are `text`, `textarea`, `select`, `switch`, and `slider`.
-- The preview panel can copy the current flat `pluginParams` object as JSON.
+The Vite preview renders only frame `0` with default plugin props. It does not
+run an animation clock or expose parameter controls.
 
 ### Parameter Semantics
 
 - Keep `videoWidth` / `videoHeight` as video layout params.
-- Treat other params in `defaultProps` and `paramFields` as current-feature animation params.
+- Treat other params in `defaultProps` as current-feature animation params.
 - When replacing the default animation/plugin, replace those animation params together with scene logic.
 
 ## How To Switch Feature

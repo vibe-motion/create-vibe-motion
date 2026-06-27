@@ -66,7 +66,6 @@ Then replace only:
 
 - `preview:*`: preview app lifecycle (`preview:dev`, `preview:build`, `preview:serve`)
 - `remotion:*`: remotion lifecycle (`remotion:studio`, `remotion:compositions`, `remotion:render`)
-- `deploy:*`: deployment helper commands
 - short alias `dev` is kept for convenience
 
 ## Studio audio tracks

@@ -1,5 +1,4 @@
 [
-  ".env.example",
   "eslint.config.js",
   "remotion.config.js",
   "vite.config.js",
@@ -11,6 +10,5 @@
   "scripts/dev-workbench.mjs",
   "scripts/remotion-ensure-browser.mjs",
   "scripts/remotion-render.mjs",
-  "scripts/open-edgeone-pages.mjs",
   "shared"
 ]

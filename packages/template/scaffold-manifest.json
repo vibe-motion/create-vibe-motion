@@ -1,4 +1,5 @@
 [
+  "AGENTS.md",
   "eslint.config.js",
   "remotion.config.js",
   "vite.config.js",

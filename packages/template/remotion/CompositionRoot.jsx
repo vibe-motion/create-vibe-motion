@@ -1,13 +1,13 @@
 import React from "react";
 import { Composition } from "remotion";
-import { ScaffoldVideo } from "./ScaffoldVideo.jsx";
+import { VideoComposition } from "./VideoComposition.jsx";
 import {
   normalizePositiveInt,
   resolvePluginDurationInFrames,
   resolvePluginLayout,
   resolvePluginParams,
   resolvePluginSceneContext,
-} from "../pluginRuntime.js";
+} from "./pluginRuntime.js";
 
 const normalizeCompositionId = (value) => {
   if (typeof value !== "string") {
@@ -19,14 +19,16 @@ const normalizeCompositionId = (value) => {
 };
 
 const bindVideoComponent = (plugin) => {
-  const BoundVideoComponent = (props) => <ScaffoldVideo plugin={plugin} {...props} />;
-  BoundVideoComponent.displayName = `ScaffoldVideo:${plugin?.id ?? "unknown"}`;
+  const BoundVideoComponent = (props) => (
+    <VideoComposition plugin={plugin} {...props} />
+  );
+  BoundVideoComponent.displayName = `VideoComposition:${plugin?.id ?? "unknown"}`;
   return BoundVideoComponent;
 };
 
-export const ScaffoldRoot = ({ compositionId, fps, plugin }) => {
+export const CompositionRoot = ({ compositionId, fps, plugin }) => {
   if (!plugin) {
-    throw new Error("[scaffold] active plugin is required for ScaffoldRoot");
+    throw new Error("[vibe-motion] active plugin is required for CompositionRoot");
   }
 
   const resolvedCompositionId = normalizeCompositionId(compositionId);

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-export const DemoMotionScene = ({
+export const MotionScene = ({
   title,
   subtitle,
   badgeText,

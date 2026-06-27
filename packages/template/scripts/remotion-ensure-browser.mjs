@@ -6,9 +6,9 @@ const run = async () => {
   });
 
   if (browserExecutable) {
-    console.log(`[Remotion] shared browser ready: ${browserExecutable}`);
+    console.log(`[Remotion] cached browser ready: ${browserExecutable}`);
   } else {
-    console.log("[Remotion] shared browser pinning skipped for this platform.");
+    console.log("[Remotion] cached browser pinning skipped for this platform.");
   }
 };
 

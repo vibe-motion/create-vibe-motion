@@ -11,11 +11,11 @@ import {
   resolvePluginParams,
   resolvePluginSceneContext,
   resolvePluginSceneProps,
-} from "../pluginRuntime.js";
+} from "./pluginRuntime.js";
 import { useCurrentFrame, useVideoConfig } from "remotion";
-import { ScaffoldAudioTracks } from "./ScaffoldAudioTracks.jsx";
+import { AudioTracks } from "./AudioTracks.jsx";
 
-export const ScaffoldVideo = ({ plugin, ...rawPluginParams }) => {
+export const VideoComposition = ({ plugin, ...rawPluginParams }) => {
   const frame = useCurrentFrame();
   const { durationInFrames, fps, width, height } = useVideoConfig();
   const waitsForSceneLayoutReady = plugin?.waitForSceneLayoutReady === true;
@@ -127,7 +127,7 @@ export const ScaffoldVideo = ({ plugin, ...rawPluginParams }) => {
 
   return (
     <AbsoluteFill style={{ backgroundColor: "transparent", overflow: "hidden" }}>
-      <ScaffoldAudioTracks />
+      <AudioTracks />
       {SceneComponent ? (
         <Sequence from={0} durationInFrames={durationInFrames} name="动画">
           <SceneComponent {...sceneProps} onAutoLayoutReady={handleAutoLayoutReady} />

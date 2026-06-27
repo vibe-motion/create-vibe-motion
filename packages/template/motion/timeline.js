@@ -1,4 +1,4 @@
-import { DEFAULT_DEMO_MOTION_PLUGIN_PARAMS } from "../config/demoMotionDefaults.js";
+import { DEFAULT_MOTION_PROPS } from "./config.js";
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
 
@@ -59,38 +59,38 @@ const toBoolean = (value, fallback) => {
   return fallback;
 };
 
-export const resolveDemoMotionSceneContext = (pluginParams = {}) => {
+export const resolveMotionSceneContext = (pluginParams = {}) => {
   const videoWidth = toInt(
     pluginParams.videoWidth,
-    DEFAULT_DEMO_MOTION_PLUGIN_PARAMS.videoWidth,
+    DEFAULT_MOTION_PROPS.videoWidth,
     480,
     1280
   );
   const videoHeight = toInt(
     pluginParams.videoHeight,
-    DEFAULT_DEMO_MOTION_PLUGIN_PARAMS.videoHeight,
+    DEFAULT_MOTION_PROPS.videoHeight,
     480,
     1440
   );
 
   return {
-    title: toText(pluginParams.title, DEFAULT_DEMO_MOTION_PLUGIN_PARAMS.title),
-    subtitle: toText(pluginParams.subtitle, DEFAULT_DEMO_MOTION_PLUGIN_PARAMS.subtitle),
-    badgeText: toText(pluginParams.badgeText, DEFAULT_DEMO_MOTION_PLUGIN_PARAMS.badgeText),
+    title: toText(pluginParams.title, DEFAULT_MOTION_PROPS.title),
+    subtitle: toText(pluginParams.subtitle, DEFAULT_MOTION_PROPS.subtitle),
+    badgeText: toText(pluginParams.badgeText, DEFAULT_MOTION_PROPS.badgeText),
     cardDarkMode: toBoolean(
       pluginParams.cardDarkMode,
-      DEFAULT_DEMO_MOTION_PLUGIN_PARAMS.cardDarkMode
+      DEFAULT_MOTION_PROPS.cardDarkMode
     ),
-    speed: clamp(toNumber(pluginParams.speed, DEFAULT_DEMO_MOTION_PLUGIN_PARAMS.speed), 0, 1),
+    speed: clamp(toNumber(pluginParams.speed, DEFAULT_MOTION_PROPS.speed), 0, 1),
     cardTiltMax: clamp(
-      toNumber(pluginParams.cardTiltMax, DEFAULT_DEMO_MOTION_PLUGIN_PARAMS.cardTiltMax),
+      toNumber(pluginParams.cardTiltMax, DEFAULT_MOTION_PROPS.cardTiltMax),
       -30,
       30
     ),
     durationSeconds: clamp(
       toNumber(
         pluginParams.durationSeconds,
-        DEFAULT_DEMO_MOTION_PLUGIN_PARAMS.durationSeconds
+        DEFAULT_MOTION_PROPS.durationSeconds
       ),
       1,
       30
@@ -102,21 +102,21 @@ export const resolveDemoMotionSceneContext = (pluginParams = {}) => {
   };
 };
 
-export const getDemoMotionDurationInFrames = ({ fps, sceneContext, pluginParams } = {}) => {
-  const resolvedContext = sceneContext ?? resolveDemoMotionSceneContext(pluginParams ?? {});
+export const getMotionDurationInFrames = ({ fps, sceneContext, pluginParams } = {}) => {
+  const resolvedContext = sceneContext ?? resolveMotionSceneContext(pluginParams ?? {});
   const resolvedFps = toPositiveFrames(fps, 30);
   return toPositiveFrames(resolvedContext.durationSeconds * resolvedFps, resolvedFps);
 };
 
-export const buildDemoMotionSceneProps = ({
+export const buildMotionSceneProps = ({
   frame = 0,
   fps,
   loop = false,
   sceneContext,
   pluginParams,
 } = {}) => {
-  const resolvedContext = sceneContext ?? resolveDemoMotionSceneContext(pluginParams ?? {});
-  const durationInFrames = getDemoMotionDurationInFrames({
+  const resolvedContext = sceneContext ?? resolveMotionSceneContext(pluginParams ?? {});
+  const durationInFrames = getMotionDurationInFrames({
     fps,
     sceneContext: resolvedContext,
   });

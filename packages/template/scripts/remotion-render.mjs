@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { ACTIVE_COMPOSITION_ID } from "../shared/project/projectConfig.js";
+import { ACTIVE_COMPOSITION_ID } from "../motion/project.js";
 import { ensureSharedBrowserExecutable, runLocalRemotionCli } from "./remotion-browser-executable.mjs";
 
 const DEFAULT_CODEC = "prores";

@@ -1,4 +1,4 @@
-import "../shared/styles/index.css";
+import "./styles.css";
 import { registerRoot } from "remotion";
 import { ProjectRoot } from "./ProjectRoot";
 

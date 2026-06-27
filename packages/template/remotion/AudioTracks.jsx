@@ -47,7 +47,7 @@ const loadAudioTrackManifest = async () => {
   return normalizeAudioTrackManifest(await response.json());
 };
 
-export const ScaffoldAudioTracks = () => {
+export const AudioTracks = () => {
   const { durationInFrames, fps, id: compositionId } = useVideoConfig();
   const isStudio = getRemotionEnvironment().isStudio;
   const [manifest, setManifest] = useState(null);
@@ -57,7 +57,7 @@ export const ScaffoldAudioTracks = () => {
   const publicFolderSyncQueueRef = useRef(Promise.resolve());
   const publicFolderSyncRequestRef = useRef(0);
   const [manifestHandle] = useState(() =>
-    delayRender("Loading scaffold audio tracks")
+    delayRender("Loading audio tracks")
   );
   const manifestLoaded = manifest !== null;
 
@@ -95,7 +95,7 @@ export const ScaffoldAudioTracks = () => {
     if (removedTrackCount > 0) {
       shouldPersistManifest = true;
       console.info(
-        `[scaffold] Removed ${removedTrackCount} audio track(s) whose files no longer exist.`
+        `[vibe-motion] Removed ${removedTrackCount} audio track(s) whose files no longer exist.`
       );
     }
 
@@ -116,7 +116,7 @@ export const ScaffoldAudioTracks = () => {
     const handledSync = nextSync
       .then(() => true)
       .catch((error) => {
-        console.error("[scaffold] Failed to synchronize audio tracks:", error);
+        console.error("[vibe-motion] Failed to synchronize audio tracks:", error);
         return false;
       });
     publicFolderSyncQueueRef.current = handledSync.then(() => undefined);

@@ -1,4 +1,3 @@
-/* eslint-env node */
 import { Config } from "@remotion/cli/config";
 import { enableTailwind } from "@remotion/tailwind-v4";
 

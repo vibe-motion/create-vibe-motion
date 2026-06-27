@@ -2,14 +2,11 @@
   "AGENTS.md",
   "eslint.config.js",
   "remotion.config.js",
-  "vite.config.js",
-  "preview",
   "public",
   "remotion",
+  "motion",
   "scripts/remotion-browser-executable.mjs",
   "scripts/remotion-cli.mjs",
-  "scripts/dev-workbench.mjs",
   "scripts/remotion-ensure-browser.mjs",
-  "scripts/remotion-render.mjs",
-  "shared"
+  "scripts/remotion-render.mjs"
 ]

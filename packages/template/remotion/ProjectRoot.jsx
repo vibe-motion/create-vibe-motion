@@ -1,13 +1,13 @@
 import React from "react";
-import { ACTIVE_COMPOSITION, ACTIVE_PLUGIN } from "../shared/project/activeProject.js";
-import { ScaffoldRoot } from "../shared/scaffold/remotion/ScaffoldRoot.jsx";
+import { ACTIVE_COMPOSITION } from "../motion/project.js";
+import { CompositionRoot } from "./CompositionRoot.jsx";
 
 export const ProjectRoot = () => {
   return (
-    <ScaffoldRoot
+    <CompositionRoot
       compositionId={ACTIVE_COMPOSITION.id}
       fps={ACTIVE_COMPOSITION.fps}
-      plugin={ACTIVE_PLUGIN}
+      plugin={ACTIVE_COMPOSITION.plugin}
     />
   );
 };

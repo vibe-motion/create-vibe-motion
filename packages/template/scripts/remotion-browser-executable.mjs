@@ -289,7 +289,7 @@ const installToSharedCache = ({
     chmodSync(destinationBinaryPath, 0o755);
   }
   writeMetadataFile({ destinationBinaryPath, remotionVersion, platformTag });
-  log(`Installed shared Chrome Headless Shell at: ${destinationBinaryPath}`);
+  log(`Installed cached Chrome Headless Shell at: ${destinationBinaryPath}`);
 };
 
 export const ensureSharedBrowserExecutable = async ({ logPrefix = DEFAULT_LOG_PREFIX } = {}) => {
@@ -315,7 +315,7 @@ export const ensureSharedBrowserExecutable = async ({ logPrefix = DEFAULT_LOG_PR
   const { destinationBinaryPath, destinationBrowserDirectory } =
     getVersionedInstallPaths({ remotionVersion, platformTag });
   if (isExecutableFile(destinationBinaryPath)) {
-    log(`Found shared Chrome Headless Shell for Remotion ${remotionVersion}.`);
+    log(`Found cached Chrome Headless Shell for Remotion ${remotionVersion}.`);
     log(`browserExecutable=${destinationBinaryPath}`);
     return destinationBinaryPath;
   }

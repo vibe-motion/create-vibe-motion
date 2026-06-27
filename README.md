@@ -31,7 +31,7 @@ You can override it with `--registry=<url>` or `npm_config_registry`.
 
 If no directory is provided, it creates `./vibe-motion-app` by default.
 
-On macOS, install triggers a shared Chrome Headless Shell check/install for Remotion and stores it under:
+On macOS, install triggers a cached Chrome Headless Shell check/install for Remotion and stores it under:
 
 `~/Library/Caches/com.zjucat.create-vive-motion/remotion`
 
@@ -61,11 +61,14 @@ scripts/
 
 When adding or removing scaffold files, update `scaffold-manifest.json` first.
 
+Template code is split into `motion/` for user animation code and `remotion/`
+for the Remotion Studio/rendering support layer.
+
 ## Development
 
 ```bash
 pnpm install              # install all dependencies
-pnpm dev                  # run preview + Remotion studio
+pnpm dev                  # run Remotion Studio
 pnpm lint                 # lint template code
 pnpm run sync-template    # sync template files into CLI package
 pnpm run create:local     # test scaffold generation locally

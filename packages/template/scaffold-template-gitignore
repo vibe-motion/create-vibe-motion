@@ -13,7 +13,6 @@ dist-ssr
 out
 build/
 .cache/
-.vite/
 .remotion/
 coverage/
 *.local

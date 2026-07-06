@@ -1,4 +1,7 @@
 import React, { useEffect } from "react";
+import { Img, staticFile } from "remotion";
+
+const CLAUDE_LOGO_SRC = staticFile("img/claude.svg");
 
 export const MotionScene = ({
   title,
@@ -40,6 +43,7 @@ export const MotionScene = ({
         backgroundColor: "hsl(238 95% 78% / 0.5)",
         borderColor: "hsl(218 80% 62% / 0.5)",
       };
+  const logoSize = 110 * s;
 
   return (
     <div
@@ -74,10 +78,36 @@ export const MotionScene = ({
             {badgeText}
           </div>
 
+          <div
+            className="absolute flex items-center justify-center rounded-[28px] border"
+            style={{
+              top: 36 * s,
+              right: 36 * s,
+              width: 128 * s,
+              height: 128 * s,
+              backgroundColor: isDarkCard
+                ? "hsl(224 32% 18% / 0.94)"
+                : "hsl(0 0% 100% / 0.78)",
+              borderColor: isDarkCard
+                ? "hsl(214 32% 75% / 0.22)"
+                : "hsl(0 0% 100% / 0.78)",
+            }}
+          >
+            <Img
+              src={CLAUDE_LOGO_SRC}
+              alt="Claude"
+              style={{
+                width: logoSize,
+                height: logoSize,
+              }}
+            />
+          </div>
+
           <h1
             className="font-semibold leading-[1.04] tracking-[-0.03em]"
             style={{
               fontSize: Math.round(48 * s) + "px",
+              maxWidth: "72%",
               color: isDarkCard ? "hsl(210 40% 98%)" : "hsl(222 47% 11%)",
               textShadow: isDarkCard
                 ? `0 ${10 * s}px ${32 * s}px rgba(15, 23, 42, 0.45)`

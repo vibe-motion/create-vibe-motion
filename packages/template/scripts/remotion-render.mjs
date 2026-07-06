@@ -7,7 +7,7 @@ const DEFAULT_CODEC = "prores";
 const DEFAULT_PRORES_PROFILE = "4444";
 const DEFAULT_PIXEL_FORMAT = "yuva444p10le";
 const DEFAULT_IMAGE_FORMAT = "png";
-const DEFAULT_SCALE = "2";
+const DEFAULT_SCALE = "1";
 const DEFAULT_COMPOSITION_ID = ACTIVE_COMPOSITION_ID;
 
 const compositionId = (

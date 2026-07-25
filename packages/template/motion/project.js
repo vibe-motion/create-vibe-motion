@@ -1,9 +1,10 @@
+import { ACTIVE_COMPOSITION_ID } from "./composition-id.js";
 import { motionPlugin } from "./plugin.js";
 
 export const ACTIVE_COMPOSITION = Object.freeze({
-  id: "Motion30fps",
+  id: ACTIVE_COMPOSITION_ID,
   fps: 30,
   plugin: motionPlugin,
 });
 
-export const ACTIVE_COMPOSITION_ID = ACTIVE_COMPOSITION.id;
+export { ACTIVE_COMPOSITION_ID };

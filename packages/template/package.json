@@ -10,7 +10,7 @@
     "remotion:bundle": "node scripts/remotion-cli.mjs bundle",
     "remotion:compositions": "node scripts/remotion-cli.mjs compositions",
     "remotion:render": "node scripts/remotion-render.mjs",
-    "remotion:render:demo": "REMOTION_OUTPUT=out/motion-defaults-transparent.mov REMOTION_PROPS_FILE=motion/render-presets/default.json pnpm run remotion:render",
+    "remotion:render:demo": "node scripts/remotion-render-demo.mjs",
     "dev": "pnpm run remotion:studio",
     "build": "pnpm run remotion:bundle",
     "lint": "eslint .",

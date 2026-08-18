@@ -8,5 +8,6 @@
   "scripts/remotion-browser-executable.mjs",
   "scripts/remotion-cli.mjs",
   "scripts/remotion-ensure-browser.mjs",
-  "scripts/remotion-render.mjs"
+  "scripts/remotion-render.mjs",
+  "scripts/remotion-render-demo.mjs"
 ]
